@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+*.translation
+
+# C# and Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# OS generated
+.DS_Store
+Thumbs.db

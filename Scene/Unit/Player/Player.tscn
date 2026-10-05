@@ -1,0 +1,254 @@
+[gd_scene format=3 uid="uid://dfagwax8dyb58"]
+
+[ext_resource type="Script" uid="uid://b8fnqbto5r5ah" path="res://Scene/Unit/Player/Player.cs" id="1_oda6w"]
+[ext_resource type="Texture2D" uid="uid://nsgu5qtpmwpk" path="res://Sprites/Player_01/jump-03.png" id="2_fknmj"]
+[ext_resource type="Texture2D" uid="uid://bua55rvdbhrpq" path="res://Sprites/Player_01/idle-01.png" id="2_kqjso"]
+[ext_resource type="Texture2D" uid="uid://cifpe5hfix2rf" path="res://Sprites/Player_01/Attack-01.png" id="2_vd5ke"]
+[ext_resource type="Texture2D" uid="uid://bdb44iev5nm5i" path="res://Sprites/Player_01/walk_01.png" id="3_7irfd"]
+[ext_resource type="Texture2D" uid="uid://bngjekx0eopo8" path="res://Sprites/Player_01/Attack-02.png" id="3_my1pw"]
+[ext_resource type="Texture2D" uid="uid://cbbfwq13w6gs" path="res://Sprites/Player_01/Attack-03.png" id="4_d8tge"]
+[ext_resource type="Texture2D" uid="uid://dp3g1780vd367" path="res://Sprites/Player_01/jump-01.png" id="4_gxfvs"]
+[ext_resource type="Texture2D" uid="uid://c0o27aus2n6x8" path="res://Sprites/Player_01/walk_02.png" id="4_u508g"]
+[ext_resource type="Texture2D" uid="uid://fp1qht7gpiqg" path="res://Sprites/Player_01/Attack-04.png" id="5_1inlk"]
+[ext_resource type="Texture2D" uid="uid://dypxc1jch6up5" path="res://Sprites/Player_01/jump-02.png" id="5_ijfu6"]
+[ext_resource type="Texture2D" uid="uid://d17i8u4la6tts" path="res://Sprites/Player_01/walk_03.png" id="5_r41sv"]
+[ext_resource type="Texture2D" uid="uid://b6163f1b6sbb0" path="res://Sprites/Player_01/walk_04.png" id="6_fknmj"]
+[ext_resource type="Script" uid="uid://cbcsgqfgo2l6k" path="res://Scene/Unit/Player/WhipLineController.cs" id="10_gxfvs"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
+radius = 53.0
+height = 249.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_vd5ke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_my1pw")
+}, {
+"duration": 2.5,
+"texture": ExtResource("4_d8tge")
+}, {
+"duration": 1.5,
+"texture": ExtResource("5_1inlk")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 6.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_fknmj")
+}],
+"loop": 0,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_kqjso")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_gxfvs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ijfu6")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7irfd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_u508g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r41sv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_fknmj")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 9.0
+}]
+
+[sub_resource type="Animation" id="Animation_my1pw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HandPoint:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-62, -71)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../TipPoint:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-109, 105)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../WhipLine:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_vd5ke"]
+resource_name = "attack_whip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HandPoint:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4999, 0.52090347),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-62, -71), Vector2(-26, -90), Vector2(82, 13), Vector2(82, -13), Vector2(59, -21)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../TipPoint:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.25, 0.52090347),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-109, 105), Vector2(-178, -66), Vector2(172, -195), Vector2(398, 1), Vector2(360, 85)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../WhipLine:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_my1pw"]
+_data = {
+&"RESET": SubResource("Animation_my1pw"),
+&"attack_whip": SubResource("Animation_vd5ke")
+}
+
+[node name="Player" type="CharacterBody2D" unique_id=45060868]
+script = ExtResource("1_oda6w")
+Speed = 450.0
+JumpVelocity = -480.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799293913]
+position = Vector2(-3, 0.5)
+shape = SubResource("CapsuleShape2D_w7xlj")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=381147079]
+zoom = Vector2(1.5, 1.5)
+limit_left = -200
+limit_top = -500
+limit_right = 2500
+limit_bottom = 1000
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2104219057]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_w7xlj")
+animation = &"attack"
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=558885932]
+root_node = NodePath("../AnimatedSprite2D")
+libraries/ = SubResource("AnimationLibrary_my1pw")
+
+[node name="WhipLine" type="Line2D" parent="." unique_id=156691809 node_paths=PackedStringArray("HandPoint", "TipPoint")]
+default_color = Color(0.31862828, 0.61076313, 1, 1)
+script = ExtResource("10_gxfvs")
+HandPoint = NodePath("../HandPoint")
+TipPoint = NodePath("../TipPoint")
+
+[node name="HandPoint" type="Marker2D" parent="." unique_id=423004034]
+position = Vector2(-62, -71)
+
+[node name="TipPoint" type="Marker2D" parent="." unique_id=474629489]
+position = Vector2(-109, 105)
