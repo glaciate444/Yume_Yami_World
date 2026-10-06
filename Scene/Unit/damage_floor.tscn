@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://oibqjbs1d3tx"]
+
+[ext_resource type="Texture2D" uid="uid://daloiweyc8any" path="res://Sprites/spikes.png" id="1_jgo1c"]
+[ext_resource type="Script" uid="uid://bgofc8t5cswsd" path="res://Scripts/Stages/DamageFloor.cs" id="1_tgdfv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7rx5i"]
+size = Vector2(46, 46)
+
+[node name="DamageFloor" type="Area2D" unique_id=230869864]
+script = ExtResource("1_tgdfv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=769436018]
+texture = ExtResource("1_jgo1c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1523803615]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_7rx5i")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]

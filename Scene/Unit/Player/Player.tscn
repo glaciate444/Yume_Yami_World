@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://dfagwax8dyb58"]
 
 [ext_resource type="Script" uid="uid://b8fnqbto5r5ah" path="res://Scripts/Player/Player.cs" id="1_oda6w"]
+[ext_resource type="Texture2D" uid="uid://cyo80ntskkqfr" path="res://Sprites/Player_01/knockback_01.png" id="2_1inlk"]
 [ext_resource type="Texture2D" uid="uid://nsgu5qtpmwpk" path="res://Sprites/Player_01/jump-03.png" id="2_fknmj"]
 [ext_resource type="Texture2D" uid="uid://bua55rvdbhrpq" path="res://Sprites/Player_01/idle-01.png" id="2_kqjso"]
 [ext_resource type="Texture2D" uid="uid://cifpe5hfix2rf" path="res://Sprites/Player_01/Attack-01.png" id="2_vd5ke"]
 [ext_resource type="Texture2D" uid="uid://bdb44iev5nm5i" path="res://Sprites/Player_01/walk_01.png" id="3_7irfd"]
+[ext_resource type="Texture2D" uid="uid://cw3g33kbphr62" path="res://Sprites/Player_01/knockback_02-1.png" id="3_70oc3"]
 [ext_resource type="Texture2D" uid="uid://bngjekx0eopo8" path="res://Sprites/Player_01/Attack-02.png" id="3_my1pw"]
+[ext_resource type="Texture2D" uid="uid://8gjb0b84k7e5" path="res://Sprites/Player_01/knockback_03.png" id="4_bsng7"]
 [ext_resource type="Texture2D" uid="uid://cbbfwq13w6gs" path="res://Sprites/Player_01/Attack-03.png" id="4_d8tge"]
 [ext_resource type="Texture2D" uid="uid://dp3g1780vd367" path="res://Sprites/Player_01/jump-01.png" id="4_gxfvs"]
 [ext_resource type="Texture2D" uid="uid://c0o27aus2n6x8" path="res://Sprites/Player_01/walk_02.png" id="4_u508g"]
@@ -16,34 +19,34 @@
 [ext_resource type="Script" uid="uid://cbcsgqfgo2l6k" path="res://Scripts/Player/WhipLineController.cs" id="10_gxfvs"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
-radius = 53.0
-height = 249.0
+radius = 47.0
+height = 205.0
 
 [sub_resource type="Animation" id="Animation_my1pw"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:animation")
+tracks/0/path = NodePath("../WhipLine:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.0009999999),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [&"attack"]
+"values": [false, false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:frame")
+tracks/1/path = NodePath(".:animation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [&"idle"]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -55,43 +58,19 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-62, -71)]
+"values": [Vector2(-44, -52)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../TipPoint:position")
+tracks/3/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-109, 105)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../WhipLine:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:disabled")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_vd5ke"]
@@ -127,10 +106,10 @@ tracks/2/path = NodePath("../HandPoint:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.4999, 0.52090347),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0999, 0.1, 0.199, 0.1999, 0.2, 0.4999, 0.5, 0.52090347),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-62, -71), Vector2(-26, -90), Vector2(82, 13), Vector2(82, -13), Vector2(59, -21)]
+"values": [Vector2(-44, -52), Vector2(-45, -56), Vector2(-21, -69), Vector2(-21, -69), Vector2(60, 12), Vector2(59, 10), Vector2(59, 12), Vector2(46, -14), Vector2(59, -21)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -168,6 +147,30 @@ tracks/5/keys = {
 "update": 1,
 "values": [true, false, true]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-252.5, -1), Vector2(-3, -1), Vector2(-129.75, -1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my1pw"]
 _data = {
@@ -177,6 +180,20 @@ _data = {
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1inlk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_70oc3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bsng7")
+}],
+"loop": 0,
+"name": &"Knockback",
+"speed": 8.5
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_vd5ke")
@@ -240,12 +257,12 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
-size = Vector2(168, 44)
+size = Vector2(255.5, 44)
 
 [node name="Player" type="CharacterBody2D" unique_id=45060868]
 script = ExtResource("1_oda6w")
 Speed = 450.0
-JumpVelocity = -480.0
+JumpVelocity = -500.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799293913]
 position = Vector2(-3, 0.5)
@@ -266,13 +283,12 @@ autoplay = &"RESET"
 [node name="Graphics" type="Node2D" parent="." unique_id=1627969580]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Graphics" unique_id=2104219057]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_w7xlj")
-animation = &"attack"
-frame = 1
+animation = &"idle"
 
 [node name="HandPoint" type="Marker2D" parent="Graphics" unique_id=423004034]
-position = Vector2(-62, -71)
+position = Vector2(-44, -52)
 
 [node name="TipPoint" type="Marker2D" parent="Graphics" unique_id=474629489]
 position = Vector2(-109, 105)
@@ -282,12 +298,14 @@ z_index = 12
 position = Vector2(0, -1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/TipPoint/WhipHitbox" unique_id=1426456397]
-position = Vector2(-1, -1)
+visible = false
+position = Vector2(-252.5, -1)
 shape = SubResource("RectangleShape2D_w7xlj")
 disabled = true
 
 [node name="WhipLine" type="Line2D" parent="Graphics" unique_id=156691809 node_paths=PackedStringArray("HandPoint", "TipPoint")]
-default_color = Color(0.31862828, 0.61076313, 1, 1)
+visible = false
+default_color = Color(0.31764707, 0.6117647, 1, 1)
 script = ExtResource("10_gxfvs")
 HandPoint = NodePath("../HandPoint")
 TipPoint = NodePath("../TipPoint")

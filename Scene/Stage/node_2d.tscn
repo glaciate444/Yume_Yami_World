@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://d2neg2v8b6tmk" path="res://Sprites/SampleBlock.png" id="2_073sl"]
 [ext_resource type="Texture2D" uid="uid://c6a0ocl17nhy2" path="res://Sprites/SampleBlockSlope.png" id="3_iod34"]
 [ext_resource type="PackedScene" uid="uid://dtwg3d4k1cop8" path="res://Scene/Unit/BreakableBlock.tscn" id="4_35fwl"]
+[ext_resource type="PackedScene" uid="uid://oibqjbs1d3tx" path="res://Scene/Unit/damage_floor.tscn" id="5_cprwu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]
 texture = ExtResource("2_073sl")
@@ -72,3 +73,6 @@ JumpVelocity = -600.0
 
 [node name="Node2D" parent="." unique_id=1111541673 instance=ExtResource("4_35fwl")]
 position = Vector2(734, 419)
+
+[node name="DamageFloor" parent="." unique_id=230869864 instance=ExtResource("5_cprwu")]
+position = Vector2(290, 576)
