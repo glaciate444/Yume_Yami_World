@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ch3v4rpeu8atl"]
+
+[ext_resource type="Texture2D" uid="uid://c747knj8ulxep" path="res://Sprites/brick_brown.png" id="1_tfqbo"]
+[ext_resource type="Script" uid="uid://bcsni15gfxdoy" path="res://Scripts/OneShotParticle.cs" id="1_yilgs"]
+
+[node name="BlockBreakParticle" type="CPUParticles2D" unique_id=1045982840]
+z_index = 6
+emitting = false
+amount = 5
+texture = ExtResource("1_tfqbo")
+one_shot = true
+explosiveness = 1.0
+direction = Vector2(0, -1)
+spread = 90.0
+initial_velocity_max = 200.0
+script = ExtResource("1_yilgs")

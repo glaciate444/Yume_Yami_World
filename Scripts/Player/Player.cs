@@ -19,15 +19,21 @@ public partial class Player : CharacterBody2D{
 
 	// アニメーション操作用の変数を追加
 	private AnimatedSprite2D _animatedSprite;
-
 	// プレイヤーの変数宣言部分に追加
 	private AnimationPlayer _animationPlayer;
-	
-	public override void _Ready(){
-		// ゲーム開始時にノードを取得
-		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-	}
+    // まとめて反転させるためのノード
+    private Node2D _graphics; 
+
+    public override void _Ready(){
+        // 階層が変わったのでパスを修正して取得
+        _graphics = GetNode<Node2D>("Graphics");
+        _animatedSprite = GetNode<AnimatedSprite2D>("Graphics/AnimatedSprite2D");
+        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+
+        // ▼ 鞭の当たり判定を取得し、「何かに触れた時」のシグナル（イベント）を登録する
+        Area2D whipHitbox = GetNode<Area2D>("Graphics/TipPoint/WhipHitbox");
+        whipHitbox.BodyEntered += OnWhipHitboxBodyEntered;
+    }
 
 	public override void _PhysicsProcess(double delta){
 		Vector2 velocity = Velocity;
@@ -88,15 +94,16 @@ public partial class Player : CharacterBody2D{
 
 // アニメーション切り替えと左右反転のメソッド
 	private void UpdateAnimation(float directionX){
-		// 移動方向に応じてキャラクターの左右の向き（FlipH）を反転
-		if (directionX != 0){
-			_animatedSprite.FlipH = directionX < 0;
-		}
+        // ▼ 変更箇所：FlipH ではなく、Graphics全体のスケールを反転させる！
+        // これにより、手元（HandPoint）や当たり判定（TipPoint）も一緒に反対側へ移動します。
+        if (directionX != 0){
+            _graphics.Scale = new Vector2(directionX < 0 ? -1 : 1, 1);
+        }
 
-		// 次に再生すべきアニメーションの名前を決定する
-		string nextAnim = "";
+        // 次に再生すべきアニメーションの名前を決定する
+        string nextAnim = "";
 
-		if (IsOnFloor()){
+        if (IsOnFloor()){
 			if (directionX == 0){
 				nextAnim = "idle"; // 止まっている時
 			}else{
@@ -129,4 +136,20 @@ public partial class Player : CharacterBody2D{
 	private void ResetAttackState(){
 		_isAttacking = false;
 	}
+
+    // ▼ 新規追加：鞭の当たり判定に何かのボディ（箱や敵など）が重なった時に自動で呼ばれる処理
+    private void OnWhipHitboxBodyEntered(Node2D body){
+        // 1. 何かに触れたら絶対に出力する
+        GD.Print($"ムチが {body.Name} に当たりました！");
+
+        // 触れた相手が IDamageable インターフェースを持っているか（壊せる箱や敵か）をチェック
+        if (body is IDamageable damageable){
+            // 相手を吹き飛ばす方向（ノックバック）を計算
+            // Graphics.Scale.X を見ることで、右向きなら 1、左向きなら -1 の方向になります
+            Vector2 knockback = new Vector2(_graphics.Scale.X, 0);
+
+            // Unity時代と同じメソッドを呼び出し、ダメージ1を与える！
+            damageable.TakeDamage(1, knockback);
+        }
+    }
 }

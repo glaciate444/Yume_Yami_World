@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dtwg3d4k1cop8"]
+
+[ext_resource type="Script" uid="uid://bib7nmv0qpsgo" path="res://Scripts/Stages/BreakableBlock.cs" id="1_2nq0a"]
+[ext_resource type="Texture2D" uid="uid://dqwcwlamuikrq" path="res://Sprites/block_empty.png" id="2_b2jdc"]
+[ext_resource type="PackedScene" uid="uid://ch3v4rpeu8atl" path="res://Scene/Unit/block_break_particle.tscn" id="2_g5h8w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
+size = Vector2(63, 64)
+
+[node name="BreakableBlock" type="Node2D" unique_id=1111541673]
+
+[node name="BreakableBlock" type="StaticBody2D" parent="." unique_id=226880503]
+disable_mode = 2
+script = ExtResource("1_2nq0a")
+BreakParticlePrefab = ExtResource("2_g5h8w")
+
+[node name="Sprite2D" type="Sprite2D" parent="BreakableBlock" unique_id=194187426]
+texture = ExtResource("2_b2jdc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableBlock" unique_id=1262785878]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_w7xlj")
