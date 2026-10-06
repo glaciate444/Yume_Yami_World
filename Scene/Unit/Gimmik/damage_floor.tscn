@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://oibqjbs1d3tx"]
 
-[ext_resource type="Texture2D" uid="uid://daloiweyc8any" path="res://Sprites/spikes.png" id="1_jgo1c"]
+[ext_resource type="Texture2D" uid="uid://daloiweyc8any" path="res://Sprites/Gimmik/spikes.png" id="1_jgo1c"]
 [ext_resource type="Script" uid="uid://bgofc8t5cswsd" path="res://Scripts/Stages/DamageFloor.cs" id="1_tgdfv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7rx5i"]

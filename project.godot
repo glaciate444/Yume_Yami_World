@@ -25,6 +25,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="YumeYamiWorld"
 
+[global_group]
+
+Player=""
+
 [input]
 
 move_left={

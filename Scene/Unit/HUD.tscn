@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dm6mr5ydkw7v"]
+
+[ext_resource type="Texture2D" uid="uid://3shmb7sssk6m" path="res://Sprites/HUD/HP_Bar_0.png" id="1_g0lkc"]
+[ext_resource type="Texture2D" uid="uid://civ5j4i1miqwe" path="res://Sprites/HUD/HP_Bar_Back.png" id="1_p58es"]
+[ext_resource type="Script" uid="uid://btry7djvfp6la" path="res://Scripts/Player/HUD.cs" id="1_vqag7"]
+[ext_resource type="Texture2D" uid="uid://7gnk4618vcdy" path="res://Sprites/HUD/HP_Bar.png" id="2_vqag7"]
+[ext_resource type="Texture2D" uid="uid://cdut2t1yhjmrs" path="res://Sprites/HUD/HP_Bar_3.png" id="4_0wv5t"]
+[ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="6_0wv5t"]
+
+[node name="HUD" type="CanvasLayer" unique_id=2048391615]
+script = ExtResource("1_vqag7")
+
+[node name="Margin" type="Control" parent="." unique_id=555134924]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Margin" unique_id=9020464]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 72.0
+offset_right = 474.0
+offset_bottom = 112.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_p58es")
+texture_progress = ExtResource("2_vqag7")
+
+[node name="TextureRect" type="TextureRect" parent="Margin" unique_id=1899303395]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 30.0
+offset_right = 164.0
+offset_bottom = 150.0
+texture = ExtResource("1_g0lkc")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Margin" unique_id=230730044]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 39.0
+offset_right = 592.0
+offset_bottom = 139.0
+texture = ExtResource("4_0wv5t")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Margin/TextureRect2" unique_id=1615830009]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 1.0
+offset_right = 106.0
+offset_bottom = 100.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("6_0wv5t")
+theme_override_font_sizes/font_size = 70
+text = "12"
+horizontal_alignment = 1

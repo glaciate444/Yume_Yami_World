@@ -2,6 +2,19 @@ using Godot;
 using System;
 
 public partial class Player : CharacterBody2D, IDamageable{
+    // ▼ UIへ数値を送るためのシグナル（Unityの HUDManager.Instance.Update... の代わり）
+    [Signal] public delegate void HealthChangedEventHandler(int currentHp, int maxHp);
+    [Signal] public delegate void SpChangedEventHandler(int currentSp, int maxSp);
+
+    //[Header("HP設定")]
+    [Export] public int MaxHealth = 12;
+    public int CurrentHealth;
+
+    //[Header("SP設定")]
+    [Export] public int MaxSp = 6;
+    public int CurrentSp;
+
+
     [Export] public float Speed = 300.0f;
 	[Export] public float JumpVelocity = -500.0f;
 
@@ -41,9 +54,20 @@ public partial class Player : CharacterBody2D, IDamageable{
         // ▼ 鞭の当たり判定を取得し、「何かに触れた時」のシグナル（イベント）を登録する
         Area2D whipHitbox = GetNode<Area2D>("Graphics/TipPoint/WhipHitbox");
         whipHitbox.BodyEntered += OnWhipHitboxBodyEntered;
-    }
 
-	public override void _PhysicsProcess(double delta){
+        // ゲーム開始時にステータスを最大値にして、UIに送信
+        CurrentHealth = MaxHealth;
+        CurrentSp = MaxSp;
+
+        // 確実なタイミングでUIを初期化するため CallDeferred を使う
+        CallDeferred(nameof(EmitHealthChanged));
+        CallDeferred(nameof(EmitSpChanged));
+    }
+    // シグナル送信用の補助メソッド
+    private void EmitHealthChanged() => EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
+    private void EmitSpChanged() => EmitSignal(SignalName.SpChanged, CurrentSp, MaxSp);
+    
+    public override void _PhysicsProcess(double delta){
 		Vector2 velocity = Velocity;
 
         // ▼ 修正1：if文の外で direction をあらかじめ準備（宣言）しておく
@@ -167,31 +191,37 @@ public partial class Player : CharacterBody2D, IDamageable{
             damageable.TakeDamage(1, knockback);
         }
     }
-    // ダメージを受けた時の処理（IDamageableの実装）
+    // ==========================================
+    // ▼ HPの処理 (元 PlayerHealth.cs の役割)
+    // ==========================================
     public async void TakeDamage(int damage, Vector2 knockbackDirection, bool isIceAttack = false){
-        // ▼ 変更：無敵中ならダメージとノックバックを完全に無視する
-        if (_isInvincible) return;
+        if (_isInvincible) return; // 無敵中は処理しない
 
         _isKnockback = true;
-        _isInvincible = true; // 無敵開始
+        _isInvincible = true;
 
-        GD.Print($"プレイヤーがダメージを受けた！ 予定ダメージ量: {damage}");
+        // ダメージ計算（0未満にならないようにする）
+        CurrentHealth -= damage;
+        CurrentHealth = Mathf.Max(CurrentHealth, 0);
 
-        // ▼ 追加：準備したアニメーションを再生
-        _animatedSprite.Play("Knockback");
+        // ★HPが減ったのでUIにシグナルを送る
+        EmitHealthChanged();
 
-        // ▼ ノックバックの物理的な動き
+        if (CurrentHealth <= 0){
+            GD.Print("プレイヤー死亡処理"); // 元の Die() 相当
+        }
+
+        _animatedSprite.Play("knockback");
+
+        // ▼ 私が消してしまっていた物理ノックバック処理を復活！
         float knockbackForceX = knockbackDirection.X * 300f;
         float knockbackForceY = -300f;
         Velocity = new Vector2(knockbackForceX, knockbackForceY);
 
-        // ▼ 追加：無敵の点滅エフェクトを開始（※awaitをつけないことで、裏で並行して点滅させます）
-        DamageEffect();
+        DamageEffect(); // 1秒間の点滅エフェクト
 
-        // 操作不能時間（ノックバック）が終わるのを待つ
+        // ノックバック終了待ち
         await ToSignal(GetTree().CreateTimer(_knockbackDuration), SceneTreeTimer.SignalName.Timeout);
-
-        // 時間が経ったらノックバック状態を解除（操作可能に戻る）
         _isKnockback = false;
     }
     // ▼ 新規追加：無敵時間の点滅エフェクト
@@ -212,5 +242,26 @@ public partial class Player : CharacterBody2D, IDamageable{
         // 念のため確実に不透明に戻す
         _animatedSprite.Modulate = new Color(1, 1, 1, 1);
         _isInvincible = false; // 無敵終了
+    }
+    // ==========================================
+    // ▼ SPの処理 (元 PlayerShoot.cs の役割)
+    // ==========================================
+    private void Shoot(){
+        int cost = 1; // 本来は currentSpecialEquip.spCost[cite: 19]
+
+        if (CurrentSp >= cost){
+            CurrentSp -= cost; // SPを消費[cite: 19]
+            EmitSpChanged();   // ★SPが減ったのでUIにシグナルを送る
+
+            // 弾の発射処理など...[cite: 19]
+            GD.Print("弾を発射しました！");
+            _animationPlayer.Play("attack_whip"); // 仮のアニメーション
+        }
+    }
+
+    public void RecoverSp(int amount){
+        CurrentSp += amount;
+        CurrentSp = Mathf.Clamp(CurrentSp, 0, MaxSp); // 最大値を超えないように制限[cite: 19]
+        EmitSpChanged(); // ★SPが回復したのでUIにシグナルを送る
     }
 }

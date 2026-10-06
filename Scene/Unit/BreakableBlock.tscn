@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bib7nmv0qpsgo" path="res://Scripts/Stages/BreakableBlock.cs" id="1_2nq0a"]
 [ext_resource type="Texture2D" uid="uid://dqwcwlamuikrq" path="res://Sprites/block_empty.png" id="2_b2jdc"]
-[ext_resource type="PackedScene" uid="uid://ch3v4rpeu8atl" path="res://Scene/Unit/block_break_particle.tscn" id="2_g5h8w"]
+[ext_resource type="PackedScene" uid="uid://ch3v4rpeu8atl" path="res://Scene/Unit/Particle/block_break_particle.tscn" id="2_g5h8w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
 size = Vector2(63, 64)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://daloiweyc8any"
-path="res://.godot/imported/spikes.png-1e39ba846b6c2b2af0495d59400829b8.ctex"
+uid="uid://cgs325i2lljlb"
+path="res://.godot/imported/SP_Bar_0_s1.png-94b32e3a0cf224ddd3160a63e445436f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/spikes.png"
-dest_files=["res://.godot/imported/spikes.png-1e39ba846b6c2b2af0495d59400829b8.ctex"]
+source_file="res://Sprites/HUD/SP_Bar_0_s1.png"
+dest_files=["res://.godot/imported/SP_Bar_0_s1.png-94b32e3a0cf224ddd3160a63e445436f.ctex"]
 
 [params]
 
