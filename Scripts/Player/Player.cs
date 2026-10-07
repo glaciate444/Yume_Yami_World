@@ -14,13 +14,19 @@ public partial class Player : CharacterBody2D, IDamageable{
     [Export] public int MaxSp = 6;
     public int CurrentSp;
 
+    // ▼ 追加：AP（アクションポイント）用シグナル
+    [Signal] public delegate void ApChangedEventHandler(int currentAp, int maxAp);
+    [Export] public int MaxAp = 3;
+    public int CurrentAp;
+    [Export] public float ApRecoveryTime = 3.0f; // 3秒で1回復
+    private float _apTimer = 0.0f;
 
     [Export] public float Speed = 300.0f;
 	[Export] public float JumpVelocity = -500.0f;
 
-	// ▼ ダッシュ用の変数を追加
-	[Export] public float DashSpeed = 800.0f;
-	[Export] public float DashDuration = 0.4f;
+    // ▼ ダッシュ用の変数を追加
+    [Export] public float DashSpeed = 1200.0f;
+    [Export] public float DashDuration = 0.4f;
 
 	private bool _isDashing = false;
 	private float _dashTimer = 0.0f;
@@ -58,15 +64,17 @@ public partial class Player : CharacterBody2D, IDamageable{
         // ゲーム開始時にステータスを最大値にして、UIに送信
         CurrentHealth = MaxHealth;
         CurrentSp = MaxSp;
+        CurrentAp = MaxAp; // ▼ 追加
 
-        // 確実なタイミングでUIを初期化するため CallDeferred を使う
         CallDeferred(nameof(EmitHealthChanged));
         CallDeferred(nameof(EmitSpChanged));
+        CallDeferred(nameof(EmitApChanged)); // ▼ 追加
     }
     // シグナル送信用の補助メソッド
     private void EmitHealthChanged() => EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
     private void EmitSpChanged() => EmitSignal(SignalName.SpChanged, CurrentSp, MaxSp);
-    
+    private void EmitApChanged() => EmitSignal(SignalName.ApChanged, CurrentAp, MaxAp); // ▼ 追加
+
     public override void _PhysicsProcess(double delta){
 		Vector2 velocity = Velocity;
 
@@ -78,28 +86,52 @@ public partial class Player : CharacterBody2D, IDamageable{
             velocity += GetGravity() * (float)delta;
         }
 
+        // ▼ 新規追加：APの自動回復処理 (Unityの dashRecoveryTimer 相当)
+        if (CurrentAp < MaxAp){
+            _apTimer += (float)delta;
+            if (_apTimer >= ApRecoveryTime){
+                CurrentAp++;
+                _apTimer = 0.0f;
+                EmitApChanged(); // UIを更新
+            }
+        }else{
+            _apTimer = 0.0f;
+        }
+
         // 2. ノックバック「ではない」時だけ、通常のキー操作を受け付ける
         if (!_isKnockback){
             direction = Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
-            if (direction.X != 0){
+
+            // ▼ ダッシュ中でない時だけ向きを更新する（これで完全にロックされます）
+            if (!_isDashing && direction.X != 0){
                 _facingDirection = Mathf.Sign(direction.X);
             }
 
-            // ▼ ダッシュの開始処理
-            if (Input.IsActionJustPressed("dash") && !_isDashing){
+            // ▼ 修正：ダッシュ中でない時だけ向きを更新する（振り向きバグの修正！）
+            // 【重要：バグ修正】ダッシュ中でない時だけ向きを更新する！
+            // これにより、ダッシュ中に方向キーを入れても左右に動いたりUターンできなくなります。
+            if (!_isDashing && direction.X != 0){
+                _facingDirection = Mathf.Sign(direction.X);
+            }
+
+            // ▼ 修正：APが1以上ある時のみダッシュ可能にし、実行時にAPを減らす
+            if (Input.IsActionJustPressed("dash") && !_isDashing && CurrentAp > 0){
                 _isDashing = true;
                 _dashTimer = DashDuration;
+
+                CurrentAp--; // APを消費
+                EmitApChanged(); // UIを更新
             }
 
             // ▼ 状態ごとの移動処理
             if (_isDashing){
-                // ダッシュ中：重力を無視してX軸に高速移動
+                // ダッシュ中：キー入力を無視して向いている方向へ一直線に飛ぶ
                 _dashTimer -= (float)delta;
-                velocity.Y = 0; // 重力落下をキャンセル[cite: 16]
+                velocity.Y = 0; // 落下しない
                 velocity.X = _facingDirection * DashSpeed;
 
                 if (_dashTimer <= 0){
-                    _isDashing = false;
+                    _isDashing = false; // ダッシュ終了
                 }
             }else{
                 // 通常時：ジャンプ処理
@@ -115,12 +147,13 @@ public partial class Player : CharacterBody2D, IDamageable{
                 }
             }
         }
-		Velocity = velocity;
+        Velocity = velocity;
 		MoveAndSlide();
 
         // ダッシュ中以外でアニメーションを更新
         // ▼ 変更後（攻撃中もUpdateAnimationを呼ばないようにする）
         // ダッシュ中・攻撃中・ノックバック中 以外でアニメーションを更新
+        // アニメーションの更新（ダッシュ・攻撃・ノックバック中は更新しない）
         if (!_isDashing && !_isAttacking && !_isKnockback){
             UpdateAnimation(direction.X);
         }
