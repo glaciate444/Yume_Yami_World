@@ -299,6 +299,7 @@ size = Vector2(255.5, 44)
 size = Vector2(20, 21.064367)
 
 [node name="Player" type="CharacterBody2D" unique_id=45060868]
+z_index = 12
 script = ExtResource("1_oda6w")
 Speed = 450.0
 

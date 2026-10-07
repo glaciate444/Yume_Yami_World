@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://jpab5u0o644e"]
+
+[ext_resource type="Script" uid="uid://b4jb27vo127u2" path="res://Scripts/Stages/MovingPlatform.cs" id="1_jdvyq"]
+[ext_resource type="Texture2D" uid="uid://dvwo26vu6jkuy" path="res://Sprites/Gimmik/ChocolateLift_02.png" id="2_50h6e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
+size = Vector2(87, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1hij"]
+size = Vector2(87, 10)
+
+[node name="MovingPlatformSetup" type="Node2D" unique_id=1707202820]
+
+[node name="Platform" type="AnimatableBody2D" parent="." unique_id=1182762802 node_paths=PackedStringArray("_waypoints", "_rideDetector")]
+script = ExtResource("1_jdvyq")
+_waypoints = [NodePath("../PointA"), NodePath("../PointB")]
+_rideDetector = NodePath("RideDetector")
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform" unique_id=1911759120]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_50h6e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform" unique_id=32947793]
+position = Vector2(1, 12)
+shape = SubResource("RectangleShape2D_w7xlj")
+one_way_collision = true
+one_way_collision_margin = 6.0
+
+[node name="RideDetector" type="Area2D" parent="Platform" unique_id=903808108]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform/RideDetector" unique_id=1301640295]
+position = Vector2(0.5, -5)
+shape = SubResource("RectangleShape2D_r1hij")
+one_way_collision = true
+one_way_collision_margin = 6.0
+
+[node name="PointA" type="Marker2D" parent="." unique_id=1411186107]
+
+[node name="PointB" type="Marker2D" parent="." unique_id=96366566]
+position = Vector2(244, 0)
