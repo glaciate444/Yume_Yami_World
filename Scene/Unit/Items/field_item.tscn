@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cnytdb3hdofbn"]
+
+[ext_resource type="Texture2D" uid="uid://chkei0wstms1q" path="res://Sprites/Items/items_food_1.png" id="1_ydjdm"]
+[ext_resource type="Script" uid="uid://clg6mwog7emmw" path="res://Scripts/Stages/FieldItem.cs" id="2_edf5u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7xlj"]
+
+[node name="FieldItem" type="Area2D" unique_id=487536683]
+script = ExtResource("2_edf5u")
+Amount = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=363482957]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_ydjdm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1718523724]
+scale = Vector2(1.8636056, 1.9199994)
+shape = SubResource("CircleShape2D_w7xlj")

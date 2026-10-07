@@ -232,8 +232,8 @@ public partial class Player : CharacterBody2D, IDamageable{
             // Graphics.Scale.X を見ることで、右向きなら 1、左向きなら -1 の方向になります
             Vector2 knockback = new Vector2(_graphics.Scale.X, 0);
 
-            // Unity時代と同じメソッドを呼び出し、ダメージ1を与える！
-            damageable.TakeDamage(1, knockback);
+            // Unity時代と同じメソッドを呼び出し、ダメージ2を与える！
+            damageable.TakeDamage(2, knockback);
         }
     }
     // ==========================================
@@ -354,10 +354,39 @@ public partial class Player : CharacterBody2D, IDamageable{
             _animationPlayer.Play("attack_whip"); // 仮のアニメーション
         }
     }
+    // ==========================================
+    // ▼ アイテム取得時の処理
+    // ==========================================
+    public void RecoverHealth(int amount){
+        // 回復しても最大HPを超えないようにする
+        CurrentHealth = Mathf.Min(CurrentHealth + amount, MaxHealth);
+        EmitHealthChanged();
+        GD.Print($"HPが {amount} 回復した！ 現在のHP: {CurrentHealth}");
+    }
 
     public void RecoverSp(int amount){
-        CurrentSp += amount;
-        CurrentSp = Mathf.Clamp(CurrentSp, 0, MaxSp); // 最大値を超えないように制限[cite: 19]
-        EmitSpChanged(); // ★SPが回復したのでUIにシグナルを送る
+        // 回復しても最大SPを超えないようにする
+        CurrentSp = Mathf.Min(CurrentSp + amount, MaxSp);
+        EmitSpChanged();
+        GD.Print($"SPが {amount} 回復した！ 現在のSP: {CurrentSp}");
+    }
+
+    public void AddCoin(int amount){
+        // ※コインのUIや変数は未実装なので、今はログだけ出します
+        GD.Print($"コインを {amount} 枚ゲットした！");
+    }
+    // ==========================================
+    // ▼ ギミック連携（スプリングでの大ジャンプ）
+    // ==========================================
+    public void Bounce(float bounceForce){
+        // ダッシュやヒップドロップ中なら強制解除して飛ばす
+        _isDashing = false;
+        _isHipDropping = false;
+        _isHipDropFalling = false;
+        if (_hipDropHitbox != null) _hipDropHitbox.SetDeferred("monitoring", false);
+        _animatedSprite.Offset = Vector2.Zero;
+
+        // 上方向（マイナス）へ速度を強制上書き
+        Velocity = new Vector2(Velocity.X, -Mathf.Abs(bounceForce));
     }
 }
