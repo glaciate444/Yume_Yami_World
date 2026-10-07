@@ -32,7 +32,13 @@ public partial class Player : CharacterBody2D, IDamageable{
 	private float _dashTimer = 0.0f;
 	private float _facingDirection = 1.0f; // 1(右) か -1(左)
 
-	private bool _isAttacking = false;
+    // ▼ 元の変数に戻します
+    [Export] public float HipDropSpeed = 1000.0f;
+    private bool _isHipDropping = false;
+    private bool _isHipDropFalling = false;
+    private Area2D _hipDropHitbox;
+
+    private bool _isAttacking = false;
 
 	public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
@@ -68,7 +74,11 @@ public partial class Player : CharacterBody2D, IDamageable{
 
         CallDeferred(nameof(EmitHealthChanged));
         CallDeferred(nameof(EmitSpChanged));
-        CallDeferred(nameof(EmitApChanged)); // ▼ 追加
+        CallDeferred(nameof(EmitApChanged));
+
+        // ▼ 追加：ヒップドロップ判定の取得とシグナル接続
+        _hipDropHitbox = GetNode<Area2D>("Graphics/HipDropHitbox");
+        //_hipDropHitbox.BodyEntered += OnHipDropHitboxBodyEntered;
     }
     // シグナル送信用の補助メソッド
     private void EmitHealthChanged() => EmitSignal(SignalName.HealthChanged, CurrentHealth, MaxHealth);
@@ -76,7 +86,7 @@ public partial class Player : CharacterBody2D, IDamageable{
     private void EmitApChanged() => EmitSignal(SignalName.ApChanged, CurrentAp, MaxAp); // ▼ 追加
 
     public override void _PhysicsProcess(double delta){
-		Vector2 velocity = Velocity;
+        Vector2 velocity = Velocity;
 
         // ▼ 修正1：if文の外で direction をあらかじめ準備（宣言）しておく
         Vector2 direction = Vector2.Zero;
@@ -102,44 +112,47 @@ public partial class Player : CharacterBody2D, IDamageable{
         if (!_isKnockback){
             direction = Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
 
-            // ▼ ダッシュ中でない時だけ向きを更新する（これで完全にロックされます）
-            if (!_isDashing && direction.X != 0){
+            if (!_isDashing && !_isHipDropping && direction.X != 0){
                 _facingDirection = Mathf.Sign(direction.X);
             }
 
-            // ▼ 修正：ダッシュ中でない時だけ向きを更新する（振り向きバグの修正！）
-            // 【重要：バグ修正】ダッシュ中でない時だけ向きを更新する！
-            // これにより、ダッシュ中に方向キーを入れても左右に動いたりUターンできなくなります。
-            if (!_isDashing && direction.X != 0){
-                _facingDirection = Mathf.Sign(direction.X);
-            }
-
-            // ▼ 修正：APが1以上ある時のみダッシュ可能にし、実行時にAPを減らす
-            if (Input.IsActionJustPressed("dash") && !_isDashing && CurrentAp > 0){
+            if (Input.IsActionJustPressed("dash") && !_isDashing && !_isHipDropping && CurrentAp > 0){
                 _isDashing = true;
                 _dashTimer = DashDuration;
+                CurrentAp--;
+                EmitApChanged();
+            }
 
-                CurrentAp--; // APを消費
-                EmitApChanged(); // UIを更新
+            // ヒップドロップ発動判定
+            if (Input.IsActionJustPressed("ui_down") && !IsOnFloor() && !_isHipDropping && !_isDashing && CurrentAp > 0){
+                StartHipDrop();
             }
 
             // ▼ 状態ごとの移動処理
-            if (_isDashing){
-                // ダッシュ中：キー入力を無視して向いている方向へ一直線に飛ぶ
-                _dashTimer -= (float)delta;
-                velocity.Y = 0; // 落下しない
-                velocity.X = _facingDirection * DashSpeed;
+            if (_isHipDropping){
+                if (_isHipDropFalling){
+                    velocity.X = 0;
+                    velocity.Y = HipDropSpeed; // 落下
 
-                if (_dashTimer <= 0){
-                    _isDashing = false; // ダッシュ終了
+                    if (IsOnFloor()){
+                        _isHipDropFalling = false;
+                        HandleHipDropLanding(); // 着地！
+                    }
+                }else{
+                    velocity = Vector2.Zero; // 空中タメ・着地硬直中は止まる
                 }
+            }
+            else if (_isDashing){
+                // ダッシュ中
+                _dashTimer -= (float)delta;
+                velocity.Y = 0;
+                velocity.X = _facingDirection * DashSpeed;
+                if (_dashTimer <= 0) _isDashing = false;
             }else{
-                // 通常時：ジャンプ処理
+                // 通常時：ジャンプと左右移動
                 if (Input.IsActionJustPressed("jump") && IsOnFloor()){
                     velocity.Y = JumpVelocity;
                 }
-
-                // 通常時：左右の移動処理
                 if (direction != Vector2.Zero){
                     velocity.X = direction.X * Speed;
                 }else{
@@ -148,13 +161,10 @@ public partial class Player : CharacterBody2D, IDamageable{
             }
         }
         Velocity = velocity;
-		MoveAndSlide();
+        MoveAndSlide();
 
-        // ダッシュ中以外でアニメーションを更新
-        // ▼ 変更後（攻撃中もUpdateAnimationを呼ばないようにする）
-        // ダッシュ中・攻撃中・ノックバック中 以外でアニメーションを更新
-        // アニメーションの更新（ダッシュ・攻撃・ノックバック中は更新しない）
-        if (!_isDashing && !_isAttacking && !_isKnockback){
+        // ▼ 修正：ヒップドロップ中もアニメーションの自動更新を止める
+        if (!_isDashing && !_isAttacking && !_isKnockback && !_isHipDropping){
             UpdateAnimation(direction.X);
         }
 
@@ -210,6 +220,8 @@ public partial class Player : CharacterBody2D, IDamageable{
 
     // ▼ 新規追加：鞭の当たり判定に何かのボディ（箱や敵など）が重なった時に自動で呼ばれる処理
     private void OnWhipHitboxBodyEntered(Node2D body){
+
+
         if (body == this) return; // 自分自身は無視
         // 1. 何かに触れたら絶対に出力する
         GD.Print($"ムチが {body.Name} に当たりました！");
@@ -222,6 +234,57 @@ public partial class Player : CharacterBody2D, IDamageable{
 
             // Unity時代と同じメソッドを呼び出し、ダメージ1を与える！
             damageable.TakeDamage(1, knockback);
+        }
+    }
+    // ==========================================
+    // ▼ ヒップドロップ処理
+    // ==========================================
+    private async void StartHipDrop(){
+        _isHipDropping = true;
+        _isHipDropFalling = false;
+        CurrentAp--;
+        EmitApChanged();
+
+        // ▼ 追加：ヒップドロップ中だけ画像を下にズラす（数値はエディタで確認して調整してください）
+        _animatedSprite.Offset = new Vector2(0, 52);
+
+        _animatedSprite.Play("hipdrop_start");
+        await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
+
+        if (!_isKnockback && _isHipDropping){
+            _isHipDropFalling = true;
+            _animatedSprite.Play("hipdrop_fall");
+            _hipDropHitbox.SetDeferred("monitoring", true);
+        }
+    }
+
+    private async void HandleHipDropLanding(){
+        _hipDropHitbox.SetDeferred("monitoring", false);
+        try{
+            _animatedSprite.Play("hipdrop_land");
+            await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
+
+            if (!_isKnockback){
+                _animatedSprite.Play("hipdrop_recover");
+                await ToSignal(GetTree().CreateTimer(0.05f), SceneTreeTimer.SignalName.Timeout);
+            }
+        }finally{
+            _isHipDropping = false;
+
+            // ▼ 追加：ヒップドロップが終わったら、必ずOffsetを0（元の位置）に戻す！
+            _animatedSprite.Offset = Vector2.Zero;
+        }
+    }
+    private void OnHipDropHitboxBodyEntered(Node2D body){
+        // ▼ この1行を追加
+        GD.Print($"【確認用】ヒップドロップ判定が {body.Name} に接触しました！");
+
+        if (body == this) return;
+
+        if (body is IDamageable damageable)
+        {
+            Vector2 knockback = new Vector2(_graphics.Scale.X, 0);
+            damageable.TakeDamage(4, knockback);
         }
     }
     // ==========================================

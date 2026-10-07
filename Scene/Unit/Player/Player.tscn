@@ -16,6 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://dypxc1jch6up5" path="res://Sprites/Player_01/jump-02.png" id="5_ijfu6"]
 [ext_resource type="Texture2D" uid="uid://d17i8u4la6tts" path="res://Sprites/Player_01/walk_03.png" id="5_r41sv"]
 [ext_resource type="Texture2D" uid="uid://b6163f1b6sbb0" path="res://Sprites/Player_01/walk_04.png" id="6_fknmj"]
+[ext_resource type="Texture2D" uid="uid://cscc207d461po" path="res://Sprites/Player_01/Hipdrop-01.png" id="7_mt3hq"]
+[ext_resource type="Texture2D" uid="uid://by2x4e7clxgid" path="res://Sprites/Player_01/Hipdrop-02.png" id="8_ubi32"]
+[ext_resource type="Texture2D" uid="uid://gwblm6qplhk5" path="res://Sprites/Player_01/Hipdrop-03.png" id="9_f78ac"]
+[ext_resource type="Texture2D" uid="uid://cwq73ltoo5aci" path="res://Sprites/Player_01/Hipdrop-04.png" id="10_c8e8o"]
 [ext_resource type="Script" uid="uid://cbcsgqfgo2l6k" path="res://Scripts/Player/WhipLineController.cs" id="10_gxfvs"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
@@ -207,6 +211,38 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("8_ubi32")
+}],
+"loop": 0,
+"name": &"hipdrop_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_f78ac")
+}],
+"loop": 0,
+"name": &"hipdrop_land",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_c8e8o")
+}],
+"loop": 0,
+"name": &"hipdrop_recover",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_mt3hq")
+}],
+"loop": 0,
+"name": &"hipdrop_start",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_kqjso")
 }],
 "loop": 0,
@@ -259,6 +295,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
 size = Vector2(255.5, 44)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1hij"]
+size = Vector2(20, 21.064367)
+
 [node name="Player" type="CharacterBody2D" unique_id=45060868]
 script = ExtResource("1_oda6w")
 Speed = 450.0
@@ -277,7 +316,6 @@ limit_bottom = 1000
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=558885932]
 root_node = NodePath("../Graphics/AnimatedSprite2D")
 libraries/ = SubResource("AnimationLibrary_my1pw")
-autoplay = &"RESET"
 
 [node name="Graphics" type="Node2D" parent="." unique_id=1627969580]
 
@@ -309,4 +347,13 @@ script = ExtResource("10_gxfvs")
 HandPoint = NodePath("../HandPoint")
 TipPoint = NodePath("../TipPoint")
 
+[node name="HipDropHitbox" type="Area2D" parent="Graphics" unique_id=498607141]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/HipDropHitbox" unique_id=1176518004]
+position = Vector2(-1, 80)
+scale = Vector2(4.184134, 3.2625113)
+shape = SubResource("RectangleShape2D_r1hij")
+
 [connection signal="body_entered" from="Graphics/TipPoint/WhipHitbox" to="." method="OnWhipHitboxBodyEntered"]
+[connection signal="body_entered" from="Graphics/HipDropHitbox" to="." method="OnHipDropHitboxBodyEntered"]
