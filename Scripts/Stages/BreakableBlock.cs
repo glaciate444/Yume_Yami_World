@@ -11,7 +11,7 @@ public partial class BreakableBlock : StaticBody2D, IDamageable{
     [Export] public PackedScene DropItemPrefab; // GameObjectの代わり
     [Export] public PackedScene BreakParticlePrefab;
 
-    public void TakeDamage(int damage, Vector2 knockbackDirection, bool isIceAttack = false){
+    public void TakeDamage(int damage, Vector2 knockback, bool isIceAttack = false){
         // 1. 壊れない設定（鉄の箱）の時の判定[cite: 24]
         if (IsIndestructible){
             if (CanBreakByHazard && damage >= 9999){

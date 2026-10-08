@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://gwblm6qplhk5" path="res://Sprites/Player_01/Hipdrop-03.png" id="9_f78ac"]
 [ext_resource type="Texture2D" uid="uid://cwq73ltoo5aci" path="res://Sprites/Player_01/Hipdrop-04.png" id="10_c8e8o"]
 [ext_resource type="Script" uid="uid://cbcsgqfgo2l6k" path="res://Scripts/Player/WhipLineController.cs" id="10_gxfvs"]
+[ext_resource type="Script" uid="uid://cb3gtv3adsfp4" path="res://Scripts/Player/PlayerStomp.cs" id="22_ubi32"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
 radius = 47.0
@@ -298,6 +299,9 @@ size = Vector2(255.5, 44)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r1hij"]
 size = Vector2(20, 21.064367)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v3dts"]
+size = Vector2(68, 20)
+
 [node name="Player" type="CharacterBody2D" unique_id=45060868]
 z_index = 12
 script = ExtResource("1_oda6w")
@@ -355,6 +359,14 @@ monitoring = false
 position = Vector2(-1, 80)
 scale = Vector2(4.184134, 3.2625113)
 shape = SubResource("RectangleShape2D_r1hij")
+
+[node name="StompHitbox" type="Area2D" parent="." unique_id=385148326 node_paths=PackedStringArray("_player")]
+script = ExtResource("22_ubi32")
+_player = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompHitbox" unique_id=1767697993]
+position = Vector2(0, 87)
+shape = SubResource("RectangleShape2D_v3dts")
 
 [connection signal="body_entered" from="Graphics/TipPoint/WhipHitbox" to="." method="OnWhipHitboxBodyEntered"]
 [connection signal="body_entered" from="Graphics/HipDropHitbox" to="." method="OnHipDropHitboxBodyEntered"]

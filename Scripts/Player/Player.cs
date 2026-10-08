@@ -57,6 +57,8 @@ public partial class Player : CharacterBody2D, IDamageable{
     private bool _isInvincible = false;
     [Export] public float InvincibilityDuration = 1.0f; // 無敵時間（秒）
 
+    // ▼ Player.cs の変数エリアに追加（外部からヒップドロップ中か確認できるようにする）
+    public bool IsHipDropping => _isHipDropping;
     public override void _Ready(){
         // 階層が変わったのでパスを修正して取得
         _graphics = GetNode<Node2D>("Graphics");
