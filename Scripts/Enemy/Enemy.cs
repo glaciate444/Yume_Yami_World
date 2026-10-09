@@ -30,6 +30,7 @@ public partial class Enemy : CharacterBody2D, IDamageable{
     private float _deathTimer = 0.0f;
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
+    private float _hitCooldown = 0.0f;
     public override void _Ready(){
         // 子ノードから EnemyMovement を継承したスクリプトをすべて自動取得
         foreach (Node child in GetChildren()){
@@ -39,8 +40,9 @@ public partial class Enemy : CharacterBody2D, IDamageable{
         }
     }
 
-    public override void _PhysicsProcess(double delta){
+    public override void _PhysicsProcess(double delta) {
         float dt = (float)delta;
+        if (_hitCooldown > 0.0f) _hitCooldown -= dt;
 
         // 1. 死亡時（コミカル撃破の回転＆落下処理）
         if (IsDead){
@@ -78,8 +80,9 @@ public partial class Enemy : CharacterBody2D, IDamageable{
         MoveAndSlide();
     }
 
-    public void TakeDamage(int damage, Vector2 knockbackDirection, bool isIceAttack = false){
-        if (IsInvincible || IsDead) return;
+    public void TakeDamage(int damage, Vector2 knockbackDirection, bool isIceAttack = false) {
+        if (IsInvincible || IsDead || _hitCooldown > 0.0f) return;
+        _hitCooldown = 0.15f;
 
         Hp -= damage;
 
@@ -91,13 +94,13 @@ public partial class Enemy : CharacterBody2D, IDamageable{
             _animatedSprite.Play("damage");
         }
 
-        if (Hp <= 0){
-            if (isIceAttack && IceBlockPrefab != null){
+        if (Hp <= 0) {
+            if (isIceAttack && IceBlockPrefab != null) {
                 DieAsIce();
-            }else{
+            } else {
                 Die();
             }
-        }else{
+        } else {
             _knockbackTimer = KnockbackTime;
         }
     }
@@ -139,5 +142,11 @@ public partial class Enemy : CharacterBody2D, IDamageable{
         Node2D instance = prefab.Instantiate<Node2D>();
         instance.GlobalPosition = GlobalPosition;
         GetParent().CallDeferred(Node.MethodName.AddChild, instance);
+    }
+    private void PlayDefaultAnimation() {
+        if (_animatedSprite == null || _animatedSprite.SpriteFrames == null) return;
+        var frames = _animatedSprite.SpriteFrames;
+        if (frames.HasAnimation("walk")) _animatedSprite.Play("walk");
+        else if (frames.HasAnimation("idle")) _animatedSprite.Play("idle");
     }
 }

@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bnyxbxoxvbww5" path="res://Sprites/Items/items_food_3.png" id="9_wjks4"]
 [ext_resource type="PackedScene" uid="uid://derpxu7ilurhr" path="res://Scene/Unit/Gimmik/spring.tscn" id="10_4ine0"]
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_4xxnw"]
-[ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy001.tscn" id="11_8hny7"]
+[ext_resource type="PackedScene" uid="uid://bfcc4wv533r5b" path="res://Scene/Unit/Enemy/enemy004.tscn" id="13_fh2sq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]
 texture = ExtResource("2_073sl")
@@ -107,5 +107,5 @@ ItemIcon = ExtResource("10_4xxnw")
 [node name="Spring" parent="." unique_id=1566966056 instance=ExtResource("10_4ine0")]
 position = Vector2(1603, 483)
 
-[node name="Enemy" parent="." unique_id=92660466 instance=ExtResource("11_8hny7")]
-position = Vector2(938, 450)
+[node name="Enemy2" parent="." unique_id=92660466 instance=ExtResource("13_fh2sq")]
+position = Vector2(986, 450)

@@ -9,6 +9,7 @@ size = Vector2(112, 119)
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=751171149 node_paths=PackedStringArray("_sprite")]
 collision_layer = 11
 script = ExtResource("1_n5sh1")
+LifeTime = 6.0
 SlideSpeed = 750.0
 _sprite = NodePath("Sprite2D")
 

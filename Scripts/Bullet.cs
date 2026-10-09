@@ -62,7 +62,7 @@ public partial class Bullet : Area2D {
 
         // IDamageable（敵、プレイヤー、破壊可能な箱など）へのダメージ処理
         if (body is IDamageable target) {
-            Vector2 knockback = _direction * Impact;
+            Vector2 knockback = _direction;
             target.TakeDamage(Damage, knockback, IsIceAttack);
             hitSomething = true;
         }
