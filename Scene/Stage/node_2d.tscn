@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://chkei0wstms1q" path="res://Sprites/Items/items_food_1.png" id="8_ofd0w"]
 [ext_resource type="Texture2D" uid="uid://bnyxbxoxvbww5" path="res://Sprites/Items/items_food_3.png" id="9_wjks4"]
 [ext_resource type="PackedScene" uid="uid://derpxu7ilurhr" path="res://Scene/Unit/Gimmik/spring.tscn" id="10_4ine0"]
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_4xxnw"]
 [ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy001.tscn" id="11_8hny7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]
@@ -84,7 +85,8 @@ position = Vector2(1215, 481)
 [node name="DamageFloor" parent="." unique_id=230869864 instance=ExtResource("5_cprwu")]
 position = Vector2(290, 576)
 
-[node name="HUD" parent="." unique_id=1981885753 instance=ExtResource("6_ph1nm")]
+[node name="HUD" parent="." unique_id=1981885753 node_paths=PackedStringArray("_player") instance=ExtResource("6_ph1nm")]
+_player = NodePath("../Player")
 
 [node name="FieldItem" parent="." unique_id=487536683 instance=ExtResource("7_31nd6")]
 position = Vector2(1148, 350)
@@ -95,6 +97,12 @@ position = Vector2(2261, 286)
 Type = 1
 Amount = 3
 ItemIcon = ExtResource("9_wjks4")
+
+[node name="FieldItem3" parent="." unique_id=1865153980 instance=ExtResource("7_31nd6")]
+position = Vector2(2440, 313.00003)
+Type = 2
+Amount = 1
+ItemIcon = ExtResource("10_4xxnw")
 
 [node name="Spring" parent="." unique_id=1566966056 instance=ExtResource("10_4ine0")]
 position = Vector2(1603, 483)

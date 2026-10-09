@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://ssblrs4xxisl" path="res://Sprites/HUD/SP_Bar.png" id="7_mwr5y"]
 [ext_resource type="Texture2D" uid="uid://cgs325i2lljlb" path="res://Sprites/HUD/SP_Bar_0_s1.png" id="8_syk1o"]
 [ext_resource type="Texture2D" uid="uid://bfxje1k78vy50" path="res://Sprites/HUD/SP_Bar_3.png" id="9_vtkev"]
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_syk1o"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_syk1o"]
 load_path = "res://.godot/imported/DashGauge.png-ad26f6f1a47dfef0f3932c1dff59fd0e.ctex"
@@ -19,7 +20,7 @@ load_path = "res://.godot/imported/DashGauge_Empty.png-b97d44cb3b9d43609cc9a5488
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mwr5y"]
 load_path = "res://.godot/imported/DashGauge.png-ad26f6f1a47dfef0f3932c1dff59fd0e.ctex"
 
-[node name="HUD" type="CanvasLayer" unique_id=2048391615 node_paths=PackedStringArray("_hpBar", "_hpLabel", "_spBar", "_spLabel", "_apContainer")]
+[node name="HUD" type="CanvasLayer" unique_id=2048391615 node_paths=PackedStringArray("_hpBar", "_hpLabel", "_spBar", "_spLabel", "_apContainer", "_coinLabel")]
 script = ExtResource("1_vqag7")
 _hpBar = NodePath("Margin/HP_Bar")
 _hpLabel = NodePath("Margin/HPLabelBg/Label")
@@ -28,6 +29,7 @@ _spLabel = NodePath("Margin/SPLabelBg/Label")
 _apContainer = NodePath("Margin/AP_Container")
 _apOnIcon = SubResource("CompressedTexture2D_syk1o")
 _apOffIcon = SubResource("CompressedTexture2D_vtkev")
+_coinLabel = NodePath("Margin/HPLabelBg2/Label")
 
 [node name="Margin" type="Control" parent="." unique_id=555134924]
 layout_mode = 3
@@ -140,3 +142,24 @@ expand_mode = 3
 layout_mode = 2
 texture = SubResource("CompressedTexture2D_mwr5y")
 expand_mode = 3
+
+[node name="HPLabelBg2" type="TextureRect" parent="Margin" unique_id=1758556805]
+layout_mode = 0
+offset_left = 675.0
+offset_top = 39.0
+offset_right = 795.0
+offset_bottom = 139.0
+texture = ExtResource("10_syk1o")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Margin/HPLabelBg2" unique_id=1549609779]
+layout_mode = 0
+offset_left = 146.0
+offset_top = -2.0
+offset_right = 238.0
+offset_bottom = 97.0
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("6_0wv5t")
+theme_override_font_sizes/font_size = 70
+text = "000"
+horizontal_alignment = 1

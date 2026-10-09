@@ -57,6 +57,19 @@ public partial class Player : CharacterBody2D, IDamageable{
     private bool _isInvincible = false;
     [Export] public float InvincibilityDuration = 1.0f; // 無敵時間（秒）
 
+    public int Coins { get; private set; } = 0;
+    public event Action<int> CoinChanged; // HUDへ知らせるイベント
+
+    [ExportCategory("Shoot Settings")]
+    [Export] public PackedScene SpecialBulletPrefab; // 氷の弾のプレハブ
+    [Export] public Marker2D FirePoint;              // 弾の発射位置
+    [Export] public int ShootSpCost = 1;
+
+    private bool _isShooting = false;
+    private int _shootId = 0; // ノックバック等でキャンセルするための管理用
+    [Export] public float ShootFireDelay = 0.14f;    // 弾が出るタイミング（フレーム1）
+    [Export] public float ShootAnimDuration = 0.43f; // 3フレーム ÷ 7FPS
+
     // ▼ Player.cs の変数エリアに追加（外部からヒップドロップ中か確認できるようにする）
     public bool IsHipDropping => _isHipDropping;
     public override void _Ready(){
@@ -163,19 +176,25 @@ public partial class Player : CharacterBody2D, IDamageable{
             }
         }
         Velocity = velocity;
+        float moveX = velocity.X;   // 衝突前の横速度を保存
         MoveAndSlide();
+        PushIceBlocks(moveX);
 
-        // ▼ 修正：ヒップドロップ中もアニメーションの自動更新を止める
-        if (!_isDashing && !_isAttacking && !_isKnockback && !_isHipDropping){
+        // アニメ更新：射撃中も止める
+        if (!_isDashing && !_isAttacking && !_isKnockback && !_isHipDropping && !_isShooting) {
             UpdateAnimation(direction.X);
         }
 
-        if (Input.IsActionJustPressed("attack") && !_isAttacking){
-			StartAttack();
-		}
-	}
+        if (Input.IsActionJustPressed("attack") && !_isAttacking && !_isShooting) {
+            StartAttack();
+        }
 
-// アニメーション切り替えと左右反転のメソッド
+        if (Input.IsActionJustPressed("shoot") && !_isKnockback && !_isHipDropping && !_isDashing && !_isAttacking) {
+            StartShoot();
+        }
+    }
+    
+    // アニメーション切り替えと左右反転のメソッド
 	private void UpdateAnimation(float directionX){
         // ▼ 変更箇所：FlipH ではなく、Graphics全体のスケールを反転させる！
         // これにより、手元（HandPoint）や当たり判定（TipPoint）も一緒に反対側へ移動します。
@@ -243,6 +262,7 @@ public partial class Player : CharacterBody2D, IDamageable{
     // ==========================================
     private async void StartHipDrop(){
         _isHipDropping = true;
+        _isShooting = false; _shootId++;
         _isHipDropFalling = false;
         CurrentAp--;
         EmitApChanged();
@@ -296,6 +316,7 @@ public partial class Player : CharacterBody2D, IDamageable{
         if (_isInvincible) return; // 無敵中は処理しない
 
         _isKnockback = true;
+        _isShooting = false; _shootId++;
         _isInvincible = true;
 
         // ダメージ計算（0未満にならないようにする）
@@ -344,17 +365,36 @@ public partial class Player : CharacterBody2D, IDamageable{
     // ==========================================
     // ▼ SPの処理 (元 PlayerShoot.cs の役割)
     // ==========================================
-    private void Shoot(){
-        int cost = 1; // 本来は currentSpecialEquip.spCost[cite: 19]
+    private async void StartShoot() {
+        if (SpecialBulletPrefab == null || FirePoint == null) return;
+        if (_isShooting || CurrentSp < ShootSpCost) return;
 
-        if (CurrentSp >= cost){
-            CurrentSp -= cost; // SPを消費[cite: 19]
-            EmitSpChanged();   // ★SPが減ったのでUIにシグナルを送る
+        _isShooting = true;
+        int id = ++_shootId;
+        _animatedSprite.Play("shoot");
 
-            // 弾の発射処理など...[cite: 19]
-            GD.Print("弾を発射しました！");
-            _animationPlayer.Play("attack_whip"); // 仮のアニメーション
-        }
+        // 腕が伸びるまで待ってから発射
+        await ToSignal(GetTree().CreateTimer(ShootFireDelay), SceneTreeTimer.SignalName.Timeout);
+        if (id != _shootId) return; // 被弾などでキャンセルされた
+
+        if (CurrentSp >= ShootSpCost) SpawnBullet();
+
+        // アニメ終了まで待つ
+        await ToSignal(GetTree().CreateTimer(ShootAnimDuration - ShootFireDelay), SceneTreeTimer.SignalName.Timeout);
+        if (id != _shootId) return;
+        _isShooting = false;
+    }
+
+    private void SpawnBullet() {
+        CurrentSp -= ShootSpCost;
+        EmitSpChanged();
+
+        var bullet = SpecialBulletPrefab.Instantiate<Bullet>();
+        GetParent().AddChild(bullet);                     // 先にシーンへ追加
+        bullet.GlobalPosition = FirePoint.GlobalPosition; // その後に座標設定
+
+        float facingDir = _graphics.Scale.X > 0 ? 1.0f : -1.0f;
+        bullet.Initialize(new Vector2(facingDir, 0), true, this);
     }
     // ==========================================
     // ▼ アイテム取得時の処理
@@ -373,9 +413,15 @@ public partial class Player : CharacterBody2D, IDamageable{
         GD.Print($"SPが {amount} 回復した！ 現在のSP: {CurrentSp}");
     }
 
-    public void AddCoin(int amount){
-        // ※コインのUIや変数は未実装なので、今はログだけ出します
-        GD.Print($"コインを {amount} 枚ゲットした！");
+    // ▼メソッドエリアに追加
+    public void AddCoin(int amount) {
+        Coins += amount;
+
+        // 最大99枚でストップさせたい場合はここで制限をかけます
+        if (Coins > 999) Coins = 999;
+
+        // HUDへ変更を通知
+        CoinChanged?.Invoke(Coins);
     }
     // ==========================================
     // ▼ ギミック連携（スプリングでの大ジャンプ）
@@ -385,10 +431,29 @@ public partial class Player : CharacterBody2D, IDamageable{
         _isDashing = false;
         _isHipDropping = false;
         _isHipDropFalling = false;
+        _isShooting = false; _shootId++;
         if (_hipDropHitbox != null) _hipDropHitbox.SetDeferred("monitoring", false);
         _animatedSprite.Offset = Vector2.Zero;
 
         // 上方向（マイナス）へ速度を強制上書き
         Velocity = new Vector2(Velocity.X, -Mathf.Abs(bounceForce));
+    }
+    // ==========================================
+    // ▼ 凍結させたものに触れた時
+    // ==========================================
+    private void PushIceBlocks(float moveX) {
+        if (Mathf.Abs(moveX) < 1f) return;
+
+        for (int i = 0; i < GetSlideCollisionCount(); i++) {
+            var col = GetSlideCollision(i);
+            if (col.GetCollider() is IceBlock ice) {
+                // 横から正面衝突した時だけ。法線は「相手→自分」向きなので押す向きは逆
+                float pushDir = -Mathf.Sign(col.GetNormal().X);
+                if (Mathf.Abs(col.GetNormal().X) > 0.9f && Mathf.Sign(moveX) == pushDir) {
+                    // ダッシュ中だけ押せるようにするなら、条件に && _isDashing を足す
+                    ice.Push(pushDir);
+                }
+            }
+        }
     }
 }

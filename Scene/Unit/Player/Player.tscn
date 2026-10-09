@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cyo80ntskkqfr" path="res://Sprites/Player_01/knockback_01.png" id="2_1inlk"]
 [ext_resource type="Texture2D" uid="uid://nsgu5qtpmwpk" path="res://Sprites/Player_01/jump-03.png" id="2_fknmj"]
 [ext_resource type="Texture2D" uid="uid://bua55rvdbhrpq" path="res://Sprites/Player_01/idle-01.png" id="2_kqjso"]
+[ext_resource type="PackedScene" uid="uid://cglu86n6t2dqt" path="res://Scene/Unit/PlayerBullet/PlayerBullet_01.tscn" id="2_q4bys"]
 [ext_resource type="Texture2D" uid="uid://cifpe5hfix2rf" path="res://Sprites/Player_01/Attack-01.png" id="2_vd5ke"]
 [ext_resource type="Texture2D" uid="uid://bdb44iev5nm5i" path="res://Sprites/Player_01/walk_01.png" id="3_7irfd"]
 [ext_resource type="Texture2D" uid="uid://cw3g33kbphr62" path="res://Sprites/Player_01/knockback_02-1.png" id="3_70oc3"]
@@ -21,6 +22,9 @@
 [ext_resource type="Texture2D" uid="uid://gwblm6qplhk5" path="res://Sprites/Player_01/Hipdrop-03.png" id="9_f78ac"]
 [ext_resource type="Texture2D" uid="uid://cwq73ltoo5aci" path="res://Sprites/Player_01/Hipdrop-04.png" id="10_c8e8o"]
 [ext_resource type="Script" uid="uid://cbcsgqfgo2l6k" path="res://Scripts/Player/WhipLineController.cs" id="10_gxfvs"]
+[ext_resource type="Texture2D" uid="uid://c30emodnks2h7" path="res://Sprites/Player_01/Special_01_1.png" id="17_qufdn"]
+[ext_resource type="Texture2D" uid="uid://b86bpsovxccp6" path="res://Sprites/Player_01/Special_01_2.png" id="18_q4bys"]
+[ext_resource type="Texture2D" uid="uid://blyds62bcaydp" path="res://Sprites/Player_01/Special_01_3.png" id="19_6n7at"]
 [ext_resource type="Script" uid="uid://cb3gtv3adsfp4" path="res://Scripts/Player/PlayerStomp.cs" id="22_ubi32"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
@@ -77,6 +81,9 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
+
+[sub_resource type="Animation" id="Animation_ubi32"]
+resource_name = "Special_01"
 
 [sub_resource type="Animation" id="Animation_vd5ke"]
 resource_name = "attack_whip"
@@ -180,6 +187,7 @@ tracks/7/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my1pw"]
 _data = {
 &"RESET": SubResource("Animation_my1pw"),
+&"Special_01": SubResource("Animation_ubi32"),
 &"attack_whip": SubResource("Animation_vd5ke")
 }
 
@@ -277,6 +285,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("17_qufdn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_q4bys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_6n7at")
+}],
+"loop": 0,
+"name": &"shoot",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_7irfd")
 }, {
 "duration": 1.0,
@@ -302,10 +324,13 @@ size = Vector2(20, 21.064367)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v3dts"]
 size = Vector2(68, 20)
 
-[node name="Player" type="CharacterBody2D" unique_id=45060868]
+[node name="Player" type="CharacterBody2D" unique_id=45060868 node_paths=PackedStringArray("FirePoint")]
 z_index = 12
+collision_layer = 9
 script = ExtResource("1_oda6w")
 Speed = 450.0
+SpecialBulletPrefab = ExtResource("2_q4bys")
+FirePoint = NodePath("Graphics/FirePoint")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799293913]
 position = Vector2(-3, 0.5)
@@ -359,6 +384,9 @@ monitoring = false
 position = Vector2(-1, 80)
 scale = Vector2(4.184134, 3.2625113)
 shape = SubResource("RectangleShape2D_r1hij")
+
+[node name="FirePoint" type="Marker2D" parent="Graphics" unique_id=1750889966]
+position = Vector2(48, 0)
 
 [node name="StompHitbox" type="Area2D" parent="." unique_id=385148326 node_paths=PackedStringArray("_player")]
 script = ExtResource("22_ubi32")
