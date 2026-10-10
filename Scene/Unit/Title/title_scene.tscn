@@ -11,8 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://ca1kyxljfn6hf" path="res://Sprites/Title/File04_Button_.png" id="9_tjt4s"]
 [ext_resource type="Texture2D" uid="uid://bdigspgcdxiw2" path="res://Sprites/Title/MenuButton_Option_jpn.png" id="10_h8h2v"]
 [ext_resource type="Texture2D" uid="uid://gguf0qye4oxc" path="res://Sprites/Title/MenuButton_credit_jpn.png" id="10_tjt4s"]
+[ext_resource type="Texture2D" uid="uid://crsvhajcthn3b" path="res://Sprites/Title/star.png" id="12_fptei"]
 
-[node name="TitleScene" type="Control" unique_id=1903132449 node_paths=PackedStringArray("pressAnyKeyPanel", "mainPanel", "fileMenuPanel", "menuPositions", "fileTexts", "subMenuPositions")]
+[node name="TitleScene" type="Control" unique_id=2023726715 node_paths=PackedStringArray("pressAnyKeyPanel", "mainPanel", "cursorImage", "menuPositions", "fileTexts", "subMenuPositions")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,16 +21,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b7ywl")
-pressAnyKeyPanel = NodePath("MainPanel/Background/PressAnyKeyLabel")
-mainPanel = NodePath("MainPanel")
-fileMenuPanel = NodePath("FileMenuPanel")
+pressAnyKeyPanel = NodePath("MainPanel")
+mainPanel = NodePath("FileMenuPanel")
+cursorImage = NodePath("FileMenuPanel/Cursor")
 menuPositions = [NodePath("FileMenuPanel/TextureRect/File1"), NodePath("FileMenuPanel/TextureRect/File2"), NodePath("FileMenuPanel/TextureRect/File3"), NodePath("FileMenuPanel/TextureRect/File4"), NodePath("FileMenuPanel/TextureRect/Option"), NodePath("FileMenuPanel/TextureRect/Credit")]
-fileTexts = [null, null, null, null]
+fileTexts = [NodePath("FileMenuPanel/TextureRect/File1/Label"), NodePath("FileMenuPanel/TextureRect/File2/Label2"), NodePath("FileMenuPanel/TextureRect/File3/Label3"), NodePath("FileMenuPanel/TextureRect/File4/Label4")]
 subMenuPositions = []
 metadata/_edit_use_anchors_ = true
 
 [node name="MainPanel" type="Control" parent="." unique_id=789578327]
-visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -63,6 +63,7 @@ text = "Press Any Button"
 horizontal_alignment = 1
 
 [node name="FileMenuPanel" type="Control" parent="." unique_id=275202958]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -84,6 +85,22 @@ offset_right = 886.0
 offset_bottom = 441.0
 texture = ExtResource("6_34bht")
 
+[node name="Label" type="Label" parent="FileMenuPanel/TextureRect/File1" unique_id=1366611760]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.186
+anchor_top = 0.22800002
+anchor_right = 0.186
+anchor_bottom = 0.22800002
+offset_left = -0.088005066
+offset_top = 0.035995483
+offset_right = 395.912
+offset_bottom = 124.035995
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_b7ywl")
+theme_override_font_sizes/font_size = 50
+text = "あああ"
+
 [node name="File2" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=1929847317]
 layout_mode = 0
 offset_left = 1039.0
@@ -91,6 +108,22 @@ offset_top = 171.0
 offset_right = 1647.0
 offset_bottom = 435.0
 texture = ExtResource("7_2uj5l")
+
+[node name="Label2" type="Label" parent="FileMenuPanel/TextureRect/File2" unique_id=318941164]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.186
+anchor_top = 0.22800002
+anchor_right = 0.186
+anchor_bottom = 0.22800002
+offset_left = 0.91199493
+offset_top = 1.8079948
+offset_right = 396.912
+offset_bottom = 125.808
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_b7ywl")
+theme_override_font_sizes/font_size = 50
+text = "あああ"
 
 [node name="File3" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=754462526]
 layout_mode = 0
@@ -100,6 +133,22 @@ offset_right = 883.0
 offset_bottom = 743.0
 texture = ExtResource("8_ty3gs")
 
+[node name="Label3" type="Label" parent="FileMenuPanel/TextureRect/File3" unique_id=1301463468]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.186
+anchor_top = 0.22800002
+anchor_right = 0.186
+anchor_bottom = 0.22800002
+offset_left = 2.911995
+offset_top = 0.75598145
+offset_right = 398.912
+offset_bottom = 124.756
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_b7ywl")
+theme_override_font_sizes/font_size = 50
+text = "あああ"
+
 [node name="File4" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=3263769]
 layout_mode = 0
 offset_left = 1048.0
@@ -107,6 +156,22 @@ offset_top = 474.0
 offset_right = 1658.0
 offset_bottom = 750.0
 texture = ExtResource("9_tjt4s")
+
+[node name="Label4" type="Label" parent="FileMenuPanel/TextureRect/File4" unique_id=1320491830]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.186
+anchor_top = 0.22800002
+anchor_right = 0.186
+anchor_bottom = 0.22800002
+offset_left = 3.540001
+offset_top = 1.0719948
+offset_right = 399.54
+offset_bottom = 125.07201
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_b7ywl")
+theme_override_font_sizes/font_size = 50
+text = "あああ"
 
 [node name="Option" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=389269849]
 layout_mode = 0
@@ -123,3 +188,10 @@ offset_top = 820.0
 offset_right = 1887.0
 offset_bottom = 1068.0
 texture = ExtResource("10_tjt4s")
+
+[node name="Cursor" type="TextureRect" parent="FileMenuPanel" unique_id=1879918407]
+layout_mode = 0
+offset_right = 132.0
+offset_bottom = 127.0
+texture = ExtResource("12_fptei")
+expand_mode = 1

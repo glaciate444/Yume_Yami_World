@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public enum TitleState {
     PressAnyKey,
@@ -51,48 +52,63 @@ public partial class TitleManager : Control {
 
     public override void _Ready() {
         ChangeState(TitleState.PressAnyKey);
+        // フォーカスを強制的に自分自身（TitleManager）に合わせる
+        GrabFocus();
     }
 
     public override void _Process(double delta) {
+        // 連続入力を防ぐためのクールダウンを減らす処理
+        // これがないと、一度キーを押した後に一生入力がブロックされてしまいます
         if (inputCooldown > 0f) {
-            inputCooldown -= (float)delta; // unscaledDeltaTime の代わりに通常のdeltaを使用
+            inputCooldown -= (float)delta;
         }
+    }
 
-        // GodotのInput Mapを使用 (プロジェクト設定で "ui_up", "ui_accept" などを設定済みとする)
-        bool isUp = Input.IsActionJustPressed("ui_up") || (inputCooldown <= 0f && Input.GetActionStrength("ui_up") > 0.5f);
-        bool isDown = Input.IsActionJustPressed("ui_down") || (inputCooldown <= 0f && Input.GetActionStrength("ui_down") > 0.5f);
-        bool isLeft = Input.IsActionJustPressed("ui_left") || (inputCooldown <= 0f && Input.GetActionStrength("ui_left") > 0.5f);
-        bool isRight = Input.IsActionJustPressed("ui_right") || (inputCooldown <= 0f && Input.GetActionStrength("ui_right") > 0.5f);
+    public override void _Input(InputEvent @event) {
+        // クールダウン中は入力を受け付けない
+        if (inputCooldown > 0f) return;
 
-        // "ui_accept" は決定キー(ZやSpace)、 "ui_cancel" はキャンセルキー(XやEsc)
-        bool isSubmit = Input.IsActionJustPressed("ui_accept");
-        bool isCancel = Input.IsActionJustPressed("ui_cancel");
+        // キーボードの矢印キー、またはパッドの十字キーが「押された瞬間」を検知
+        bool isUp = @event.IsActionPressed("ui_up");
+        bool isDown = @event.IsActionPressed("ui_down");
+        bool isLeft = @event.IsActionPressed("ui_left");
+        bool isRight = @event.IsActionPressed("ui_right");
+        bool isSubmit = @event.IsActionPressed("ui_accept"); // Enter, Zキー等
+        bool isCancel = @event.IsActionPressed("ui_cancel"); // Esc, Xキー等
 
-        bool isAnyAction = isUp || isDown || isLeft || isRight || isSubmit || isCancel || Input.IsAnythingPressed();
+        // タイトル画面の「Press Any Button」を抜けるための検知
+        bool isAnyKey = @event is InputEventKey keyEvent && keyEvent.Pressed;
+        bool isAnyJoy = @event is InputEventJoypadButton joyButton && joyButton.Pressed;
 
         switch (currentState) {
             case TitleState.PressAnyKey:
-                if (isAnyAction && inputCooldown <= 0f) {
+                if (isAnyKey || isAnyJoy || isSubmit) {
                     ChangeState(TitleState.MainMenu);
                     inputCooldown = 0.2f;
                 }
                 break;
+
             case TitleState.MainMenu:
-                HandleMainMenuInput(isUp, isDown, isLeft, isRight, isSubmit);
+                if (isUp || isDown || isLeft || isRight || isSubmit) {
+                    HandleMainMenuInput(isUp, isDown, isLeft, isRight, isSubmit);
+                }
                 break;
+
             case TitleState.FileMenu:
-                HandleFileMenuInput(isUp, isDown, isSubmit, isCancel);
+                if (isUp || isDown || isSubmit || isCancel) {
+                    HandleFileMenuInput(isUp, isDown, isSubmit, isCancel);
+                }
                 break;
+
             case TitleState.Options:
             case TitleState.Credits:
-                if (isCancel || (isSubmit && currentState == TitleState.Credits)) {
+                if (isCancel || isSubmit) {
                     ChangeState(TitleState.MainMenu);
                     inputCooldown = 0.2f;
                 }
                 break;
         }
     }
-
     private void HandleMainMenuInput(bool isUp, bool isDown, bool isLeft, bool isRight, bool isSubmit) {
         bool moved = false;
         if (isUp) { currentIndex = navigation[currentIndex, 0]; moved = true; } else if (isDown) { currentIndex = navigation[currentIndex, 1]; moved = true; } else if (isLeft) { currentIndex = navigation[currentIndex, 2]; moved = true; } else if (isRight) { currentIndex = navigation[currentIndex, 3]; moved = true; }
@@ -118,11 +134,13 @@ public partial class TitleManager : Control {
             if (subMenuIndex == 0) {
                 GameManager.Instance.currentSaveSlot = selectedSlot;
                 GameManager.Instance.LoadGame();
+                GD.Print($"ファイル {selectedSlot} をロードしました。現在のHPは {GameManager.Instance.currentMaxHp} です。");
                 // ※ SceneTransitionManager はGodotの GetTree().ChangeSceneToFile() などに置き換え推奨
                 // GetTree().ChangeSceneToFile("res://Scene/WorldMap.tscn");
             } else {
                 GameManager.Instance.DeleteSaveData(selectedSlot);
                 ChangeState(TitleState.MainMenu);
+                GD.Print($"ファイル {selectedSlot} を新規作成しました。");
             }
         }
 
@@ -164,18 +182,44 @@ public partial class TitleManager : Control {
 
     private void ExecuteMainMenu() {
         inputCooldown = 0.2f;
+
+        // どこで止まったか確認するためのログ
+        GD.Print($"[ExecuteMainMenu] 開始。 currentIndex: {currentIndex}");
+
         if (currentIndex >= 0 && currentIndex <= 3) {
             selectedSlot = currentIndex + 1;
+
+            GD.Print($"[ExecuteMainMenu] selectedSlot: {selectedSlot}");
+
+            // GameManager の生存確認
+            if (GameManager.Instance == null) {
+                GD.PrintErr("[ExecuteMainMenu] エラー：GameManager.Instance が Null です！Autoloadの設定を確認してください。");
+                return;
+            }
+
             if (GameManager.HasSaveData(selectedSlot)) {
+                GD.Print($"[ExecuteMainMenu] スロット {selectedSlot} のセーブデータあり。FileMenuへ遷移します。");
                 ChangeState(TitleState.FileMenu);
             } else {
+                GD.Print($"[ExecuteMainMenu] スロット {selectedSlot} のセーブデータなし。新規作成します。");
                 GameManager.Instance.currentSaveSlot = selectedSlot;
+
+                GD.Print("[ExecuteMainMenu] ResetData 実行前");
                 GameManager.Instance.ResetData();
+
+                GD.Print("[ExecuteMainMenu] SaveGame 実行前");
                 GameManager.Instance.SaveGame();
+
+                GD.Print("[ExecuteMainMenu] セーブ完了、Openingシーンへ遷移します（現在はコメントアウト中）");
                 // GetTree().ChangeSceneToFile("res://Scene/Opening.tscn");
             }
-        } else if (currentIndex == 4) ChangeState(TitleState.Options);
-        else if (currentIndex == 5) ChangeState(TitleState.Credits);
+        } else if (currentIndex == 4) {
+            GD.Print("[ExecuteMainMenu] オプションへ遷移");
+            ChangeState(TitleState.Options);
+        } else if (currentIndex == 5) {
+            GD.Print("[ExecuteMainMenu] クレジットへ遷移");
+            ChangeState(TitleState.Credits);
+        }
     }
 
     private void ChangeState(TitleState newState) {

@@ -60,7 +60,7 @@ public partial class GameManager : Node {
     public List<int> clearedStageNumbers = new List<int>();
     public List<string> eventFlags = new List<string>();
 
-    public override void _EnterTree() {
+    public override void _Ready() {
         if (Instance == null) {
             Instance = this;
             // GodotのAutoloadを使用する場合はDontDestroyOnLoadは不要です
