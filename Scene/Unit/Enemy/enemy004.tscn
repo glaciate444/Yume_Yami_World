@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://brsvaf2xmnruy" path="res://Scripts/Enemy/Enemy.cs" id="1_gtdci"]
 [ext_resource type="Texture2D" uid="uid://bv06dkl422mgm" path="res://Sprites/Enemy/Enemy004/Enemy004_damage.png" id="1_o6hia"]
 [ext_resource type="Texture2D" uid="uid://cuuf3rc1cplng" path="res://Sprites/Enemy/Enemy004/Enemy004_idle_01.png" id="2_f1ai3"]
+[ext_resource type="PackedScene" uid="uid://cdua2dqdd8c51" path="res://Scene/Unit/Particle/explosion_effect.tscn" id="2_gtdci"]
 [ext_resource type="Texture2D" uid="uid://dyr1qh7wo31ss" path="res://Sprites/Enemy/Enemy004/Enemy004_attack_02.png" id="2_pcm0i"]
 [ext_resource type="Script" uid="uid://n01j7lbkjlvb" path="res://Scripts/Enemy/EnemyStationaryMage.cs" id="6_pcm0i"]
 [ext_resource type="Script" uid="uid://cq7np2ea7oly5" path="res://Scripts/Enemy/EnemyTurret.cs" id="8_npsv3"]
@@ -62,6 +63,7 @@ light_mask = 2
 floor_snap_length = 15.0
 script = ExtResource("1_gtdci")
 Hp = 4
+ExplosionEffectPrefab = ExtResource("2_gtdci")
 _graphics = NodePath("Graphics")
 _animatedSprite = NodePath("Graphics/AnimatedSprite2D")
 _bodyCollision = NodePath("CollisionShape2D")

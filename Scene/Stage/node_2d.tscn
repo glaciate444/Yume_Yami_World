@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bnyxbxoxvbww5" path="res://Sprites/Items/items_food_3.png" id="9_wjks4"]
 [ext_resource type="PackedScene" uid="uid://derpxu7ilurhr" path="res://Scene/Unit/Gimmik/spring.tscn" id="10_4ine0"]
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_4xxnw"]
+[ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy001.tscn" id="13_c8vnb"]
 [ext_resource type="PackedScene" uid="uid://bfcc4wv533r5b" path="res://Scene/Unit/Enemy/enemy004.tscn" id="13_fh2sq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]
@@ -109,3 +110,6 @@ position = Vector2(1603, 483)
 
 [node name="Enemy2" parent="." unique_id=92660466 instance=ExtResource("13_fh2sq")]
 position = Vector2(986, 450)
+
+[node name="Enemy" parent="." unique_id=541590189 instance=ExtResource("13_c8vnb")]
+position = Vector2(1818, 391)

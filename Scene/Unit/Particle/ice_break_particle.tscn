@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://lr7irjcrbsds"]
+
+[ext_resource type="Texture2D" uid="uid://bm63x1gu1cofr" path="res://Sprites/Particles/iceflaws.png" id="1_sjjce"]
+[ext_resource type="Script" uid="uid://bcsni15gfxdoy" path="res://Scripts/OneShotParticle.cs" id="2_lyplc"]
+
+[node name="IceBreakParticle" type="CPUParticles2D" unique_id=310458957]
+emitting = false
+amount = 1
+texture = ExtResource("1_sjjce")
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 150.0
+initial_velocity_max = 300.0
+script = ExtResource("2_lyplc")
+Count = 7
+Interval = 0.0

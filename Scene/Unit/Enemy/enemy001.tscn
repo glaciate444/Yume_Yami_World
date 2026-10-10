@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://brsvaf2xmnruy" path="res://Scripts/Enemy/Enemy.cs" id="1_hd6m0"]
 [ext_resource type="Texture2D" uid="uid://dbmi7o1vtipxy" path="res://Sprites/Enemy/Enemy001/Enemy01_walk01.png" id="2_6atoc"]
+[ext_resource type="PackedScene" uid="uid://cdua2dqdd8c51" path="res://Scene/Unit/Particle/explosion_effect.tscn" id="2_keis1"]
 [ext_resource type="Texture2D" uid="uid://yxohsap18tho" path="res://Sprites/Enemy/Enemy001/Enemy01_damage.png" id="2_m312r"]
 [ext_resource type="PackedScene" uid="uid://b6rl0n7lkuh7w" path="res://Scene/Unit/IceBlock.tscn" id="2_rby1j"]
 [ext_resource type="Texture2D" uid="uid://d3lgx6l0diijg" path="res://Sprites/Enemy/Enemy001/Enemy01_walk02.png" id="3_m312r"]
+[ext_resource type="PackedScene" uid="uid://lr7irjcrbsds" path="res://Scene/Unit/Particle/ice_break_particle.tscn" id="4_fa46f"]
 [ext_resource type="Texture2D" uid="uid://hk286rwirw6d" path="res://Sprites/Enemy/Enemy001/Enemy01_walk03.png" id="4_nyhnh"]
 [ext_resource type="Texture2D" uid="uid://cqum4oifp8x4l" path="res://Sprites/Enemy/Enemy001/Enemy01_walk04.png" id="5_rby1j"]
 [ext_resource type="Texture2D" uid="uid://b5gtt7qk8wj8k" path="res://Sprites/Enemy/Enemy001/Enemy01_walk05.png" id="6_keis1"]
@@ -53,7 +55,9 @@ light_mask = 2
 floor_snap_length = 15.0
 script = ExtResource("1_hd6m0")
 Hp = 2
+ExplosionEffectPrefab = ExtResource("2_keis1")
 IceBlockPrefab = ExtResource("2_rby1j")
+IceBreakEffectPrefab = ExtResource("4_fa46f")
 _graphics = NodePath("Graphics")
 _animatedSprite = NodePath("Graphics/AnimatedSprite2D")
 _bodyCollision = NodePath("CollisionShape2D")

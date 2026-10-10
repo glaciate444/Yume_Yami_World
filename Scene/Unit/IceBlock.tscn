@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ba1bso2wp6kas" path="res://Scripts/IceBlock.cs" id="1_n5sh1"]
 [ext_resource type="Texture2D" uid="uid://7l4t2uehd4ui" path="res://Sprites/Glaciated.png" id="2_b3cpf"]
+[ext_resource type="PackedScene" uid="uid://lr7irjcrbsds" path="res://Scene/Unit/Particle/ice_break_particle.tscn" id="2_yrooo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
 size = Vector2(112, 119)
@@ -11,6 +12,7 @@ collision_layer = 11
 script = ExtResource("1_n5sh1")
 LifeTime = 6.0
 SlideSpeed = 750.0
+BreakParticlePrefab = ExtResource("2_yrooo")
 _sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=628043037]

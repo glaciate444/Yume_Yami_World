@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c7apdniiluip8"]
+
+[ext_resource type="Texture2D" uid="uid://cc0kv334jf6yy" path="res://Sprites/Particles/bullet_explosion.png" id="1_8q743"]
+[ext_resource type="Script" uid="uid://bcsni15gfxdoy" path="res://Scripts/OneShotParticle.cs" id="2_7en8r"]
+
+[node name="BulletHitParticle" type="CPUParticles2D" unique_id=954827619]
+position = Vector2(802, 444)
+emitting = false
+amount = 3
+texture = ExtResource("1_8q743")
+lifetime = 0.28
+one_shot = true
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 500.0
+scale_amount_min = 0.7
+scale_amount_max = 1.2
+script = ExtResource("2_7en8r")
+ScatterRadius = 10.0
+Interval = 0.0

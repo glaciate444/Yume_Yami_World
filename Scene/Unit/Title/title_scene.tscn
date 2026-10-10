@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://by1mtn6sdb2yx"]
+
+[ext_resource type="Script" uid="uid://cehwgtiobuovm" path="res://Scripts/Managers/TitleManager.cs" id="1_b7ywl"]
+[ext_resource type="Texture2D" uid="uid://dl0neu4k5a1ea" path="res://Sprites/title_background.png" id="1_xrdtm"]
+[ext_resource type="Texture2D" uid="uid://bmm16etckc5mx" path="res://Sprites/title_01.png" id="2_xkc1y"]
+[ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="3_b7ywl"]
+[ext_resource type="Texture2D" uid="uid://d01vqnl4be11m" path="res://Sprites/Title/Normal_background001.png" id="5_p2h0x"]
+[ext_resource type="Texture2D" uid="uid://b70p7hdy6wq5o" path="res://Sprites/Title/File01_Button_.png" id="6_34bht"]
+[ext_resource type="Texture2D" uid="uid://b5fqoft33hpld" path="res://Sprites/Title/File02_Button_.png" id="7_2uj5l"]
+[ext_resource type="Texture2D" uid="uid://butdl8dij1deh" path="res://Sprites/Title/File03_Button_.png" id="8_ty3gs"]
+[ext_resource type="Texture2D" uid="uid://ca1kyxljfn6hf" path="res://Sprites/Title/File04_Button_.png" id="9_tjt4s"]
+[ext_resource type="Texture2D" uid="uid://bdigspgcdxiw2" path="res://Sprites/Title/MenuButton_Option_jpn.png" id="10_h8h2v"]
+[ext_resource type="Texture2D" uid="uid://gguf0qye4oxc" path="res://Sprites/Title/MenuButton_credit_jpn.png" id="10_tjt4s"]
+
+[node name="TitleScene" type="Control" unique_id=1903132449 node_paths=PackedStringArray("pressAnyKeyPanel", "mainPanel", "fileMenuPanel", "menuPositions", "fileTexts", "subMenuPositions")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b7ywl")
+pressAnyKeyPanel = NodePath("MainPanel/Background/PressAnyKeyLabel")
+mainPanel = NodePath("MainPanel")
+fileMenuPanel = NodePath("FileMenuPanel")
+menuPositions = [NodePath("FileMenuPanel/TextureRect/File1"), NodePath("FileMenuPanel/TextureRect/File2"), NodePath("FileMenuPanel/TextureRect/File3"), NodePath("FileMenuPanel/TextureRect/File4"), NodePath("FileMenuPanel/TextureRect/Option"), NodePath("FileMenuPanel/TextureRect/Credit")]
+fileTexts = [null, null, null, null]
+subMenuPositions = []
+metadata/_edit_use_anchors_ = true
+
+[node name="MainPanel" type="Control" parent="." unique_id=789578327]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="TextureRect" parent="MainPanel" unique_id=306712877]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1072.0
+texture = ExtResource("1_xrdtm")
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleLogo" type="TextureRect" parent="MainPanel/Background" unique_id=385752524]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 29.0
+offset_right = 867.0
+offset_bottom = 394.0
+texture = ExtResource("2_xkc1y")
+expand_mode = 1
+
+[node name="PressAnyKeyLabel" type="Label" parent="MainPanel/Background" unique_id=1418708702]
+layout_mode = 0
+offset_left = 594.0
+offset_top = 707.0
+offset_right = 1309.0
+offset_bottom = 819.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("3_b7ywl")
+theme_override_font_sizes/font_size = 80
+text = "Press Any Button"
+horizontal_alignment = 1
+
+[node name="FileMenuPanel" type="Control" parent="." unique_id=275202958]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="FileMenuPanel" unique_id=1809550331]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 48.15
+anchor_bottom = 26.925001
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_p2h0x")
+
+[node name="File1" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=814859523]
+layout_mode = 1
+offset_left = 278.0
+offset_top = 178.0
+offset_right = 886.0
+offset_bottom = 441.0
+texture = ExtResource("6_34bht")
+
+[node name="File2" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=1929847317]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 171.0
+offset_right = 1647.0
+offset_bottom = 435.0
+texture = ExtResource("7_2uj5l")
+
+[node name="File3" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=754462526]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 479.0
+offset_right = 883.0
+offset_bottom = 743.0
+texture = ExtResource("8_ty3gs")
+
+[node name="File4" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=3263769]
+layout_mode = 0
+offset_left = 1048.0
+offset_top = 474.0
+offset_right = 1658.0
+offset_bottom = 750.0
+texture = ExtResource("9_tjt4s")
+
+[node name="Option" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=389269849]
+layout_mode = 0
+offset_left = 594.0
+offset_top = 819.0
+offset_right = 1226.0
+offset_bottom = 1067.0
+texture = ExtResource("10_h8h2v")
+
+[node name="Credit" type="TextureRect" parent="FileMenuPanel/TextureRect" unique_id=691265522]
+layout_mode = 0
+offset_left = 1255.0
+offset_top = 820.0
+offset_right = 1887.0
+offset_bottom = 1068.0
+texture = ExtResource("10_tjt4s")

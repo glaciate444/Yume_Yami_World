@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://utnova2rvwdc" path="res://Scripts/Bullet.cs" id="1_3r3f3"]
 [ext_resource type="Texture2D" uid="uid://bx5tpq2lgij8q" path="res://Sprites/Bullet/FireBall.png" id="1_dxm6k"]
+[ext_resource type="PackedScene" uid="uid://c7apdniiluip8" path="res://Scene/Unit/Particle/bullet_hit_particle.tscn" id="2_q660i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
 animations = [{
@@ -20,9 +21,11 @@ radius = 102.01961
 [node name="FlameBullet" type="Area2D" unique_id=814637206]
 scale = Vector2(0.4, 0.4)
 script = ExtResource("1_3r3f3")
+Speed = 500.0
 Damage = 1
 LifeTime = 3.0
 IsIceAttack = false
+HitEffectPrefab = ExtResource("2_q660i")
 IsPlayerBullet = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1035400049]

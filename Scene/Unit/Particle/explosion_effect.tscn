@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cdua2dqdd8c51"]
+
+[ext_resource type="Texture2D" uid="uid://xo2vnsdov10k" path="res://Sprites/Particles/explosion_comival.png" id="1_mc75x"]
+[ext_resource type="Script" uid="uid://bcsni15gfxdoy" path="res://Scripts/OneShotParticle.cs" id="2_yv2kn"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mc75x"]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[node name="ExplosionParticle" type="CPUParticles2D" unique_id=830134778]
+z_index = 1
+material = SubResource("CanvasItemMaterial_mc75x")
+scale = Vector2(1e-05, 1e-05)
+emitting = false
+amount = 1
+texture = ExtResource("1_mc75x")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.4
+emission_shape = 3
+emission_rect_extents = Vector2(20, 45)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 300.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+script = ExtResource("2_yv2kn")
+Count = 8
+ScatterRadius = 120.0

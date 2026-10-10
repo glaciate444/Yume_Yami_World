@@ -12,6 +12,7 @@ public partial class Enemy : CharacterBody2D, IDamageable{
     [Export(PropertyHint.Range, "0,100")] public int DropChance = 50;
     [Export] public PackedScene ExplosionEffectPrefab;
     [Export] public PackedScene IceBlockPrefab;
+    [Export] public PackedScene IceBreakEffectPrefab;
 
     //[Header("コミカル撃破設定（落下＆回転）")]
     [Export] public float DeathJumpForce = 350.0f;
@@ -109,7 +110,13 @@ public partial class Enemy : CharacterBody2D, IDamageable{
         IsDead = true;
         SpawnPrefab(IceBlockPrefab);
         TryDropItem();
-        QueueFree();
+        if (IceBreakEffectPrefab != null) {
+            Node2D effect = (Node2D)IceBreakEffectPrefab.Instantiate();
+            effect.GlobalPosition = GlobalPosition;
+            GetParent().AddChild(effect);
+        }
+
+        QueueFree(); // 氷自身を消す
     }
 
     private void Die(){

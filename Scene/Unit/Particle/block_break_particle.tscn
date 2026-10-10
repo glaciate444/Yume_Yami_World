@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ch3v4rpeu8atl"]
 
-[ext_resource type="Texture2D" uid="uid://c747knj8ulxep" path="res://Sprites/brick_brown.png" id="1_tfqbo"]
+[ext_resource type="Texture2D" uid="uid://c747knj8ulxep" path="res://Sprites/Particles/brick_brown.png" id="1_tfqbo"]
 [ext_resource type="Script" uid="uid://bcsni15gfxdoy" path="res://Scripts/OneShotParticle.cs" id="1_yilgs"]
 
 [node name="BlockBreakParticle" type="CPUParticles2D" unique_id=1045982840]
