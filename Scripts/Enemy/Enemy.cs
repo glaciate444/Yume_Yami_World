@@ -6,7 +6,8 @@ public partial class Enemy : CharacterBody2D, IDamageable{
     [Export] public int Hp = 3;
     [Export] public float KnockbackTime = 0.2f;
     [Export] public bool IsInvincible = false;
-
+    // ▼ これを追加（デフォルトは true = ノックバックする）
+    [Export] public bool CanBeKnockbacked = true;
     //[Header("ドロップ・演出設定")]
     [Export] public PackedScene ItemPrefab;
     [Export(PropertyHint.Range, "0,100")] public int DropChance = 50;
@@ -68,12 +69,17 @@ public partial class Enemy : CharacterBody2D, IDamageable{
         }
 
         // 3. ノックバックタイマー管理
-        if (_knockbackTimer > 0.0f){
+        if (_knockbackTimer > 0.0f) {
             _knockbackTimer -= dt;
-            velocity.X = Mathf.MoveToward(velocity.X, 0, 500.0f * dt);
-            if (_knockbackTimer <= 0.0f){
+
+            // ▼ ここを修正：ノックバックする敵だけ摩擦をかける
+            if (CanBeKnockbacked) {
+                velocity.X = Mathf.MoveToward(velocity.X, 0, 500.0f * dt);
+            }
+
+            if (_knockbackTimer <= 0.0f) {
                 foreach (var m in _movements) m.PauseMovement(false);
-                if (_animatedSprite != null) _animatedSprite.Play("walk");
+                PlayDefaultAnimation();
             }
         }
 
@@ -87,12 +93,17 @@ public partial class Enemy : CharacterBody2D, IDamageable{
 
         Hp -= damage;
 
-        // 移動スクリプトを一時停止してノックバック速度を与える
-        foreach (var m in _movements) m.PauseMovement(true);
-        Velocity = new Vector2(knockbackDirection.X * 150.0f, -100.0f);
-
-        if (_animatedSprite != null && _animatedSprite.SpriteFrames.HasAnimation("damage")){
+        if (_animatedSprite != null && _animatedSprite.SpriteFrames.HasAnimation("damage")) {
             _animatedSprite.Play("damage");
+        }
+
+        // ▼ ここを修正：「CanBeKnockbacked が true の時だけ」物理的に吹き飛ばす
+        if (CanBeKnockbacked) {
+            foreach (var m in _movements) m.PauseMovement(true);
+            Velocity = new Vector2(knockbackDirection.X * 150.0f, -100.0f);
+        } else {
+            // ノックバックしない敵（固定砲台など）の場合、速度をゼロにする
+            Velocity = Vector2.Zero;
         }
 
         if (Hp <= 0) {
@@ -102,10 +113,10 @@ public partial class Enemy : CharacterBody2D, IDamageable{
                 Die();
             }
         } else {
+            // ノックバックタイマーは、アニメーションの復帰などにも使われるため作動させておく
             _knockbackTimer = KnockbackTime;
         }
     }
-
     private void DieAsIce(){
         IsDead = true;
         SpawnPrefab(IceBlockPrefab);

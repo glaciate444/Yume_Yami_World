@@ -14,6 +14,9 @@ public partial class TouchDamage : Area2D {
     }
 
     public override void _PhysicsProcess(double delta) {
+        // ▼ 追加：死んだ時など、Monitoringがオフにされたら以後の処理をストップする
+        if (!Monitoring) return;
+
         if (_disableTimer > 0.0f) {
             _disableTimer -= (float)delta;
             return;

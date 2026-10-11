@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class GameManager : Node {
     public static GameManager Instance { get; private set; }
-
+    public Player currentPlayer;
     // ▼ Godot用のセーブデータ管理ファイル
     private const string SaveFilePath = "user://savedata.cfg";
 

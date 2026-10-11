@@ -32,9 +32,9 @@ public partial class EnemyStationaryMage : Node2D {
     }
 
     private void FindPlayer() {
-        var players = GetTree().GetNodesInGroup("Player");
-        if (players.Count > 0 && players[0] is Node2D p) {
-            _player = p;
+        // ▼ Find系を廃止し、GameManagerから取得する（先ほどの手順と同じ）
+        if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null) {
+            _player = GameManager.Instance.currentPlayer;
         }
     }
 

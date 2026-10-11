@@ -70,9 +70,18 @@ public partial class Player : CharacterBody2D, IDamageable{
     [Export] public float ShootFireDelay = 0.14f;    // 弾が出るタイミング（フレーム1）
     [Export] public float ShootAnimDuration = 0.43f; // 3フレーム ÷ 7FPS
 
+    [Export] public int BaseAttackPower = 2;
+    [Export] public int BaseStompPower = 1;
+    public int PassiveAttackBonus = 0; // 後日パッシブ実装時に操作する用
+
     // ▼ Player.cs の変数エリアに追加（外部からヒップドロップ中か確認できるようにする）
     public bool IsHipDropping => _isHipDropping;
     public override void _Ready(){
+        // （既存の処理のどこかに追記）
+        if (GameManager.Instance != null) {
+            GameManager.Instance.currentPlayer = this;
+        }
+
         // 階層が変わったのでパスを修正して取得
         _graphics = GetNode<Node2D>("Graphics");
         _animatedSprite = GetNode<AnimatedSprite2D>("Graphics/AnimatedSprite2D");
@@ -81,6 +90,7 @@ public partial class Player : CharacterBody2D, IDamageable{
         // ▼ 鞭の当たり判定を取得し、「何かに触れた時」のシグナル（イベント）を登録する
         Area2D whipHitbox = GetNode<Area2D>("Graphics/TipPoint/WhipHitbox");
         whipHitbox.BodyEntered += OnWhipHitboxBodyEntered;
+        whipHitbox.AreaEntered += OnWhipHitboxAreaEntered; // ←これを追加
 
         // ゲーム開始時にステータスを最大値にして、UIに送信
         CurrentHealth = MaxHealth;
@@ -254,6 +264,16 @@ public partial class Player : CharacterBody2D, IDamageable{
             Vector2 knockback = new Vector2(_graphics.Scale.X, 0);
 
             // Unity時代と同じメソッドを呼び出し、ダメージ2を与える！
+            damageable.TakeDamage(2, knockback);
+        }
+    }
+    // ▼ 新規追加：Area2D（敵のTouchDamageなど）に鞭が当たった時用の強制処理
+    private void OnWhipHitboxAreaEntered(Area2D area) {
+        // もし当たったArea2Dの親（ルート）が、IDamageableを持っている敵ならダメージを与える
+        Node parent = area.GetParent();
+        if (parent is IDamageable damageable) {
+            GD.Print($"ムチが {parent.Name} の Area2D({area.Name}) に強制ヒットしました！");
+            Vector2 knockback = new Vector2(_graphics.Scale.X, 0);
             damageable.TakeDamage(2, knockback);
         }
     }

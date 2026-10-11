@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_4xxnw"]
 [ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy001.tscn" id="13_c8vnb"]
 [ext_resource type="PackedScene" uid="uid://bfcc4wv533r5b" path="res://Scene/Unit/Enemy/enemy004.tscn" id="13_fh2sq"]
+[ext_resource type="PackedScene" uid="uid://c827ig1ob7mmo" path="res://Scene/Unit/PauseMenu.tscn" id="14_c8vnb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]
 texture = ExtResource("2_073sl")
@@ -80,14 +81,14 @@ floor_constant_speed = true
 floor_snap_length = 16.0
 JumpVelocity = -600.0
 
+[node name="HUD" parent="." unique_id=1981885753 node_paths=PackedStringArray("_player") instance=ExtResource("6_ph1nm")]
+_player = NodePath("../Player")
+
 [node name="Node2D" parent="." unique_id=1111541673 instance=ExtResource("4_35fwl")]
 position = Vector2(1215, 481)
 
 [node name="DamageFloor" parent="." unique_id=230869864 instance=ExtResource("5_cprwu")]
 position = Vector2(290, 576)
-
-[node name="HUD" parent="." unique_id=1981885753 node_paths=PackedStringArray("_player") instance=ExtResource("6_ph1nm")]
-_player = NodePath("../Player")
 
 [node name="FieldItem" parent="." unique_id=487536683 instance=ExtResource("7_31nd6")]
 position = Vector2(1148, 350)
@@ -113,3 +114,5 @@ position = Vector2(986, 450)
 
 [node name="Enemy" parent="." unique_id=541590189 instance=ExtResource("13_c8vnb")]
 position = Vector2(1818, 391)
+
+[node name="PauseMenu" parent="." unique_id=1168007308 instance=ExtResource("14_c8vnb")]

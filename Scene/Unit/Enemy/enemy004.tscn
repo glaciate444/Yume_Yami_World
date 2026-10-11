@@ -60,9 +60,11 @@ radius = 61.20698
 
 [node name="Enemy" type="CharacterBody2D" unique_id=92660466 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
 light_mask = 2
+collision_layer = 2
 floor_snap_length = 15.0
 script = ExtResource("1_gtdci")
 Hp = 4
+CanBeKnockbacked = false
 ExplosionEffectPrefab = ExtResource("2_gtdci")
 _graphics = NodePath("Graphics")
 _animatedSprite = NodePath("Graphics/AnimatedSprite2D")
@@ -75,12 +77,6 @@ TouchDamageArea = NodePath("TouchDamage")
 scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_w7xlj")
 animation = &"walk"
-
-[node name="WallCheck" type="RayCast2D" parent="Graphics" unique_id=1147538662]
-target_position = Vector2(79, 0)
-
-[node name="EdgeCheck" type="RayCast2D" parent="Graphics" unique_id=472784611]
-target_position = Vector2(55, 168)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1173514656]
 scale = Vector2(6.0126, 6.24)

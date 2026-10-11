@@ -55,9 +55,9 @@ public partial class EnemyTurret : Node2D {
 
     // Find系メソッドを毎フレーム呼ばないよう_Readyで一度取得しキャッシュする
     private void FindPlayer() {
-        var players = GetTree().GetNodesInGroup("Player");
-        if (players.Count > 0 && players[0] is Node2D p) {
-            _player = p;
+        // ▼ グループ検索やFindを一切やめ、GameManagerから直接もらう
+        if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null) {
+            _player = GameManager.Instance.currentPlayer;
         }
     }
 
