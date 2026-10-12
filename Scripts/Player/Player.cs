@@ -74,6 +74,10 @@ public partial class Player : CharacterBody2D, IDamageable{
     [Export] public int BaseStompPower = 1;
     public int PassiveAttackBonus = 0; // 後日パッシブ実装時に操作する用
 
+    // ▼ 新規追加：壁キック用タイマー
+    private float _wallJumpTimer = 0.0f;
+    [Export] public float WallJumpDuration = 0.3f; // 0.3秒間、キー入力を無視して飛ばす
+
     // ▼ Player.cs の変数エリアに追加（外部からヒップドロップ中か確認できるようにする）
     public bool IsHipDropping => _isHipDropping;
     public override void _Ready(){
@@ -110,38 +114,38 @@ public partial class Player : CharacterBody2D, IDamageable{
     private void EmitSpChanged() => EmitSignal(SignalName.SpChanged, CurrentSp, MaxSp);
     private void EmitApChanged() => EmitSignal(SignalName.ApChanged, CurrentAp, MaxAp); // ▼ 追加
 
-    public override void _PhysicsProcess(double delta){
+    public override void _PhysicsProcess(double delta) {
         Vector2 velocity = Velocity;
 
         // ▼ 修正1：if文の外で direction をあらかじめ準備（宣言）しておく
         Vector2 direction = Vector2.Zero;
 
         // 1. 重力はノックバック中も常に計算する（空中に弾き飛ばされて落ちてくるため）
-        if (!IsOnFloor()){
+        if (!IsOnFloor()) {
             velocity += GetGravity() * (float)delta;
         }
 
         // ▼ 新規追加：APの自動回復処理 (Unityの dashRecoveryTimer 相当)
-        if (CurrentAp < MaxAp){
+        if (CurrentAp < MaxAp) {
             _apTimer += (float)delta;
-            if (_apTimer >= ApRecoveryTime){
+            if (_apTimer >= ApRecoveryTime) {
                 CurrentAp++;
                 _apTimer = 0.0f;
                 EmitApChanged(); // UIを更新
             }
-        }else{
+        } else {
             _apTimer = 0.0f;
         }
 
         // 2. ノックバック「ではない」時だけ、通常のキー操作を受け付ける
-        if (!_isKnockback){
+        if (!_isKnockback) {
             direction = Input.GetVector("move_left", "move_right", "ui_up", "ui_down");
 
-            if (!_isDashing && !_isHipDropping && direction.X != 0){
+            if (!_isDashing && !_isHipDropping && direction.X != 0) {
                 _facingDirection = Mathf.Sign(direction.X);
             }
 
-            if (Input.IsActionJustPressed("dash") && !_isDashing && !_isHipDropping && CurrentAp > 0){
+            if (Input.IsActionJustPressed("dash") && !_isDashing && !_isHipDropping && CurrentAp > 0) {
                 _isDashing = true;
                 _dashTimer = DashDuration;
                 CurrentAp--;
@@ -149,42 +153,76 @@ public partial class Player : CharacterBody2D, IDamageable{
             }
 
             // ヒップドロップ発動判定
-            if (Input.IsActionJustPressed("ui_down") && !IsOnFloor() && !_isHipDropping && !_isDashing && CurrentAp > 0){
+            if (Input.IsActionJustPressed("ui_down") && !IsOnFloor() && !_isHipDropping && !_isDashing && CurrentAp > 0) {
                 StartHipDrop();
             }
 
             // ▼ 状態ごとの移動処理
-            if (_isHipDropping){
-                if (_isHipDropFalling){
+            if (_isHipDropping) {
+                if (_isHipDropFalling) {
                     velocity.X = 0;
                     velocity.Y = HipDropSpeed; // 落下
 
-                    if (IsOnFloor()){
+                    if (IsOnFloor()) {
                         _isHipDropFalling = false;
                         HandleHipDropLanding(); // 着地！
                     }
-                }else{
+                } else {
                     velocity = Vector2.Zero; // 空中タメ・着地硬直中は止まる
                 }
-            }
-            else if (_isDashing){
+            } else if (_isDashing) {
                 // ダッシュ中
                 _dashTimer -= (float)delta;
                 velocity.Y = 0;
                 velocity.X = _facingDirection * DashSpeed;
                 if (_dashTimer <= 0) _isDashing = false;
-            }else{
+            } else {
                 // 通常時：ジャンプと左右移動
-                if (Input.IsActionJustPressed("jump") && IsOnFloor()){
+                if (Input.IsActionJustPressed("jump") && IsOnFloor()) {
                     velocity.Y = JumpVelocity;
                 }
-                if (direction != Vector2.Zero){
-                    velocity.X = direction.X * Speed;
-                }else{
-                    velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+
+                // ==========================================
+                // ▼ 新規追加：壁ずり落ち ＆ 壁キック
+                // ==========================================
+                if (IsOnWall() && !IsOnFloor()) {
+                    // 壁ずり落ち（落下速度をゆっくりにする）
+                    if (velocity.Y > 0) {
+                        velocity.Y = Mathf.Min(velocity.Y, 150.0f); // 150は滑り落ちる速度
+                    }
+
+                    // 壁キックジャンプ
+                    if (Input.IsActionJustPressed("jump")) {
+                        Vector2 wallNormal = GetWallNormal();
+
+                        // 反対方向へ弾き飛ぶ
+                        velocity.X = wallNormal.X * Speed;
+                        velocity.Y = JumpVelocity * 0.9f; // 少し弱めにジャンプ
+
+                        // 画像の向きも反転させる
+                        _graphics.Scale = new Vector2(wallNormal.X < 0 ? -1 : 1, 1);
+
+                        // ▼ 追加：壁キック直後の操作不能時間をセット
+                        _wallJumpTimer = WallJumpDuration;
+                    }
+                }
+                // ==========================================
+
+                // ▼ 修正：壁キックの操作不能タイマーがある時は、キー入力を無視する
+                if (_wallJumpTimer > 0) {
+                    _wallJumpTimer -= (float)delta;
+                    // velocity.X はいじらない（弾き飛ばされた勢いを維持する）
+                } else {
+                    // 通常の左右移動
+                    if (direction != Vector2.Zero) {
+                        velocity.X = direction.X * Speed;
+                    } else {
+                        velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+                    }
                 }
             }
         }
+
         Velocity = velocity;
         float moveX = velocity.X;   // 衝突前の横速度を保存
         MoveAndSlide();
@@ -202,10 +240,21 @@ public partial class Player : CharacterBody2D, IDamageable{
         if (Input.IsActionJustPressed("shoot") && !_isKnockback && !_isHipDropping && !_isDashing && !_isAttacking) {
             StartShoot();
         }
+        // アニメ更新：射撃中も止める
+        if (!_isDashing && !_isAttacking && !_isKnockback && !_isHipDropping && !_isShooting) {
+
+            // ▼ 修正：壁キック直後は反転処理をさせない
+            float animDir = direction.X;
+            if (_wallJumpTimer > 0) {
+                animDir = 0;
+            }
+            UpdateAnimation(animDir);
+
+        }
     }
-    
+
     // アニメーション切り替えと左右反転のメソッド
-	private void UpdateAnimation(float directionX){
+    private void UpdateAnimation(float directionX){
         // ▼ 変更箇所：FlipH ではなく、Graphics全体のスケールを反転させる！
         // これにより、手元（HandPoint）や当たり判定（TipPoint）も一緒に反対側へ移動します。
         if (directionX != 0){

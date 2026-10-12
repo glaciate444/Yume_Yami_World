@@ -28,8 +28,8 @@
 [ext_resource type="Script" uid="uid://cb3gtv3adsfp4" path="res://Scripts/Player/PlayerStomp.cs" id="22_ubi32"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w7xlj"]
-radius = 47.0
-height = 205.0
+radius = 42.0
+height = 196.0
 
 [sub_resource type="Animation" id="Animation_my1pw"]
 length = 0.001
@@ -72,14 +72,38 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
+tracks/3/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-145, -36)]
 }
 
 [sub_resource type="Animation" id="Animation_ubi32"]
@@ -154,7 +178,7 @@ tracks/5/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:disabled")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.7),
+"times": PackedFloat32Array(0, 0.25, 0.7),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -162,26 +186,26 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:position")
+tracks/6/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0.1, 0.2, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(-252.5, -1), Vector2(-3, -1), Vector2(-129.75, -1)]
+"times": PackedFloat32Array(0.25, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:visible")
+tracks/7/path = NodePath("../TipPoint/WhipHitbox/CollisionShape2D:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, false]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-145, -36)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_my1pw"]
@@ -315,8 +339,8 @@ animations = [{
 "speed": 9.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
-size = Vector2(255.5, 44)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1aflh"]
+size = Vector2(284, 123)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r1hij"]
 size = Vector2(20, 21.064367)
@@ -333,7 +357,7 @@ SpecialBulletPrefab = ExtResource("2_q4bys")
 FirePoint = NodePath("Graphics/FirePoint")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1799293913]
-position = Vector2(-3, 0.5)
+position = Vector2(-1, 0)
 shape = SubResource("CapsuleShape2D_w7xlj")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=381147079]
@@ -364,10 +388,9 @@ position = Vector2(-109, 105)
 z_index = 12
 position = Vector2(0, -1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/TipPoint/WhipHitbox" unique_id=1426456397]
-visible = false
-position = Vector2(-252.5, -1)
-shape = SubResource("RectangleShape2D_w7xlj")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Graphics/TipPoint/WhipHitbox" unique_id=1111813873]
+position = Vector2(-145, -36)
+shape = SubResource("RectangleShape2D_1aflh")
 disabled = true
 
 [node name="WhipLine" type="Line2D" parent="Graphics" unique_id=156691809 node_paths=PackedStringArray("HandPoint", "TipPoint")]

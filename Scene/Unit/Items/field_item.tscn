@@ -1,13 +1,18 @@
 [gd_scene format=3 uid="uid://cnytdb3hdofbn"]
 
 [ext_resource type="Texture2D" uid="uid://chkei0wstms1q" path="res://Sprites/Items/items_food_1.png" id="1_ydjdm"]
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="2_671yd"]
 [ext_resource type="Script" uid="uid://clg6mwog7emmw" path="res://Scripts/Stages/FieldItem.cs" id="2_edf5u"]
+[ext_resource type="Texture2D" uid="uid://bnyxbxoxvbww5" path="res://Sprites/Items/items_food_3.png" id="4_0p3fi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w7xlj"]
 
 [node name="FieldItem" type="Area2D" unique_id=487536683]
 script = ExtResource("2_edf5u")
 Amount = 5
+CoinTexture = ExtResource("2_671yd")
+HamburgerTexture = ExtResource("1_ydjdm")
+CakeTexture = ExtResource("4_0p3fi")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=363482957]
 scale = Vector2(0.2, 0.2)

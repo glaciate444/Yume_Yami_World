@@ -52,6 +52,7 @@ radius = 61.20698
 
 [node name="Enemy" type="CharacterBody2D" unique_id=92660466 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
 light_mask = 2
+collision_layer = 2
 floor_snap_length = 15.0
 script = ExtResource("1_hd6m0")
 Hp = 2
@@ -90,7 +91,6 @@ shape = SubResource("CircleShape2D_r1hij")
 
 [node name="Node" type="Node" parent="." unique_id=1969661991 node_paths=PackedStringArray("_enemyBody", "_animatedSprite", "_wallCheck", "_edgeCheck")]
 script = ExtResource("9_rby1j")
-MovingRight = true
 _enemyBody = NodePath("..")
 _animatedSprite = NodePath("../Graphics/AnimatedSprite2D")
 _wallCheck = NodePath("../Graphics/WallCheck")

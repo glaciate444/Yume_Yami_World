@@ -1,42 +1,52 @@
 using Godot;
 using System;
 
-public partial class FieldItem : Area2D{
-    public enum ItemType{
-        HealHp,
-        HealSp,
-        Coin
-    }
+[Tool] // エディタ上でも画像を即座に反映させるため
+public partial class FieldItem : Area2D {
+    // 効果の種類だけを定義（名前は汎用的に）
+    public enum ItemEffect { HealHp, HealSp, AddCoin }
 
-    [Export] public ItemType Type = ItemType.HealHp;
+    [Export] public ItemEffect Effect = ItemEffect.HealHp;
     [Export] public int Amount = 1;
 
-    // ▼ 追加：アイテムの画像をインスペクターから設定できるようにする
-    [Export] public Texture2D ItemIcon;
+    private Texture2D _itemTexture;
 
-    public override void _Ready(){
-        BodyEntered += OnBodyEntered;
-
-        // ▼ 追加：ゲーム開始時に、設定された画像に切り替える
-        if (ItemIcon != null){
-            GetNode<Sprite2D>("Sprite2D").Texture = ItemIcon;
+    // ▼ ここにインスペクターから画像をドラッグ＆ドロップできるようにする
+    [Export]
+    public Texture2D ItemTexture {
+        get => _itemTexture;
+        set {
+            _itemTexture = value;
+            UpdateIcon(); // インスペクターで画像をセットした瞬間に呼ばれる
         }
     }
 
-    private void OnBodyEntered(Node2D body){
-        if (body is Player player){
-            switch (Type){
-                case ItemType.HealHp:
-                    player.RecoverHealth(Amount);
-                    break;
-                case ItemType.HealSp:
-                    player.RecoverSp(Amount);
-                    break;
-                case ItemType.Coin:
-                    player.AddCoin(Amount);
-                    break;
+    public override void _Ready() {
+        // エディタ上ではなく、実際のゲームプレイ時のみ当たり判定をオンにする
+        if (!Engine.IsEditorHint()) {
+            BodyEntered += OnBodyEntered;
+        }
+    }
+
+    private void UpdateIcon() {
+        Sprite2D sprite = GetNodeOrNull<Sprite2D>("Sprite2D");
+        if (sprite != null) {
+            sprite.Texture = _itemTexture;
+        }
+    }
+
+    private void OnBodyEntered(Node2D body) {
+        if (body is Player player) {
+            // 効果に応じてプレイヤーのメソッドを呼ぶ
+            if (Effect == ItemEffect.HealHp) {
+                player.RecoverHealth(Amount);
+            } else if (Effect == ItemEffect.HealSp) {
+                player.RecoverSp(Amount);
+            } else if (Effect == ItemEffect.AddCoin) {
+                player.AddCoin(Amount);
             }
-            QueueFree(); // 取得したら消滅
+
+            QueueFree(); // 取得したら消滅させる
         }
     }
 }
