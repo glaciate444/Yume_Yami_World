@@ -58,7 +58,7 @@ radius = 9.291574
 [sub_resource type="CircleShape2D" id="CircleShape2D_r1hij"]
 radius = 61.20698
 
-[node name="Enemy" type="CharacterBody2D" unique_id=92660466 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
+[node name="Enemy004" type="CharacterBody2D" unique_id=92660466 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
 light_mask = 2
 collision_layer = 2
 floor_snap_length = 15.0

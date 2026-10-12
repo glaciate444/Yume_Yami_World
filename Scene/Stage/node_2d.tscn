@@ -11,8 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://bnyxbxoxvbww5" path="res://Sprites/Items/items_food_3.png" id="9_wjks4"]
 [ext_resource type="PackedScene" uid="uid://derpxu7ilurhr" path="res://Scene/Unit/Gimmik/spring.tscn" id="10_4ine0"]
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_4xxnw"]
-[ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy001.tscn" id="13_c8vnb"]
-[ext_resource type="PackedScene" uid="uid://bfcc4wv533r5b" path="res://Scene/Unit/Enemy/enemy004.tscn" id="13_fh2sq"]
+[ext_resource type="PackedScene" uid="uid://cljoxs86r7vxc" path="res://Scene/Unit/Enemy/enemy_001.tscn" id="13_c8vnb"]
+[ext_resource type="PackedScene" uid="uid://bfcc4wv533r5b" path="res://Scene/Unit/Enemy/enemy_004.tscn" id="13_fh2sq"]
 [ext_resource type="PackedScene" uid="uid://c827ig1ob7mmo" path="res://Scene/Unit/PauseMenu.tscn" id="14_c8vnb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iod34"]

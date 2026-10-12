@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://cm321t1pn6cpf"]
+
+[ext_resource type="Script" uid="uid://dban1sq7kbtsv" path="res://Scripts/Enemy/EnemyJumper.cs" id="1_2fruf"]
+[ext_resource type="Texture2D" uid="uid://4pqsyhhtcm3v" path="res://Sprites/Enemy/Enemy002/Enemy02_damage01.png" id="1_jiow0"]
+[ext_resource type="Texture2D" uid="uid://4avrosv2ipux" path="res://Sprites/Enemy/Enemy002/Enemy02_walk01.png" id="2_2fruf"]
+[ext_resource type="PackedScene" uid="uid://cdua2dqdd8c51" path="res://Scene/Unit/Particle/explosion_effect.tscn" id="2_6tbl6"]
+[ext_resource type="PackedScene" uid="uid://b6rl0n7lkuh7w" path="res://Scene/Unit/IceBlock.tscn" id="3_5pwym"]
+[ext_resource type="Texture2D" uid="uid://dd7qyev21dny2" path="res://Sprites/Enemy/Enemy002/Enemy02_walk02.png" id="3_kw31k"]
+[ext_resource type="PackedScene" uid="uid://lr7irjcrbsds" path="res://Scene/Unit/Particle/ice_break_particle.tscn" id="4_1jyqk"]
+[ext_resource type="Texture2D" uid="uid://dx18nx0tt11nf" path="res://Sprites/Enemy/Enemy002/Enemy02_walk03.png" id="4_6tbl6"]
+[ext_resource type="Script" uid="uid://cuj2rrbstkfq1" path="res://Scripts/Enemy/TouchDamage.cs" id="6_kw31k"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_jiow0")
+}],
+"loop": 1,
+"name": &"damage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_6tbl6")
+}],
+"loop": 1,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2fruf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_kw31k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_6tbl6")
+}],
+"loop": 2,
+"name": &"jump",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7xlj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6tbl6"]
+radius = 61.20698
+
+[node name="Enemy002" type="CharacterBody2D" unique_id=1220610798 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
+script = ExtResource("1_2fruf")
+Hp = 2
+ExplosionEffectPrefab = ExtResource("2_6tbl6")
+IceBlockPrefab = ExtResource("3_5pwym")
+IceBreakEffectPrefab = ExtResource("4_1jyqk")
+_graphics = NodePath("Graphics")
+_animatedSprite = NodePath("Graphics/AnimatedSprite2D")
+_bodyCollision = NodePath("CollisionShape2D")
+TouchDamageArea = NodePath("TouchDamage")
+
+[node name="Graphics" type="Node2D" parent="." unique_id=1137517300]
+scale = Vector2(0.4, 0.4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Graphics" unique_id=1951619816]
+sprite_frames = SubResource("SpriteFrames_w7xlj")
+animation = &"fall"
+
+[node name="WallCheck" type="RayCast2D" parent="Graphics/AnimatedSprite2D" unique_id=582348022]
+visible = false
+target_position = Vector2(79, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1379577716]
+rotation = 3.1415927
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_w7xlj")
+
+[node name="TouchDamage" type="Area2D" parent="." unique_id=568308720]
+script = ExtResource("6_kw31k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchDamage" unique_id=293092228]
+shape = SubResource("CircleShape2D_6tbl6")

@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bj8km6v3d8bb5"]
+
+[ext_resource type="Script" uid="uid://c43ow2gkx84xg" path="res://Scripts/Enemy/EnemyFloater.cs" id="1_www8i"]
+[ext_resource type="Texture2D" uid="uid://b8lrs0es1pf83" path="res://Sprites/Enemy/Enemy003/Enemy03-damage01.png" id="2_24sol"]
+[ext_resource type="PackedScene" uid="uid://cdua2dqdd8c51" path="res://Scene/Unit/Particle/explosion_effect.tscn" id="2_jquhk"]
+[ext_resource type="PackedScene" uid="uid://b6rl0n7lkuh7w" path="res://Scene/Unit/IceBlock.tscn" id="3_g301a"]
+[ext_resource type="Texture2D" uid="uid://momsyjie5ef8" path="res://Sprites/Enemy/Enemy003/Enemy03-fly01.png" id="3_jquhk"]
+[ext_resource type="Texture2D" uid="uid://bl5gx1k4m8oi5" path="res://Sprites/Enemy/Enemy003/Enemy03-fly02.png" id="4_g301a"]
+[ext_resource type="PackedScene" uid="uid://lr7irjcrbsds" path="res://Scene/Unit/Particle/ice_break_particle.tscn" id="4_h3fvp"]
+[ext_resource type="Texture2D" uid="uid://cvbsg2q7vglho" path="res://Sprites/Enemy/Enemy003/Enemy03-fly03.png" id="5_h3fvp"]
+[ext_resource type="Script" uid="uid://cuj2rrbstkfq1" path="res://Scripts/Enemy/TouchDamage.cs" id="7_6lflr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_24sol")
+}],
+"loop": 1,
+"name": &"damage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jquhk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_g301a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h3fvp")
+}],
+"loop": 2,
+"name": &"fly",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_jquhk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_g301a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h3fvp")
+}],
+"loop": 2,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7xlj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6tbl6"]
+radius = 61.20698
+
+[node name="Enemy003" type="CharacterBody2D" unique_id=1220610798 node_paths=PackedStringArray("_graphics", "_animatedSprite", "_bodyCollision", "TouchDamageArea")]
+script = ExtResource("1_www8i")
+ExplosionEffectPrefab = ExtResource("2_jquhk")
+IceBlockPrefab = ExtResource("3_g301a")
+IceBreakEffectPrefab = ExtResource("4_h3fvp")
+_graphics = NodePath("Graphics")
+_animatedSprite = NodePath("Graphics/AnimatedSprite2D")
+_bodyCollision = NodePath("CollisionShape2D")
+TouchDamageArea = NodePath("TouchDamage")
+
+[node name="Graphics" type="Node2D" parent="." unique_id=1137517300]
+scale = Vector2(0.4, 0.4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Graphics" unique_id=1951619816]
+sprite_frames = SubResource("SpriteFrames_w7xlj")
+animation = &"fly"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1379577716]
+rotation = 3.1415927
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_w7xlj")
+
+[node name="TouchDamage" type="Area2D" parent="." unique_id=568308720]
+script = ExtResource("7_6lflr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TouchDamage" unique_id=293092228]
+shape = SubResource("CircleShape2D_6tbl6")

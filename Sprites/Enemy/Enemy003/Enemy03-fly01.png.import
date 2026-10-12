@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg1vvbtwv28dx"
-path="res://.godot/imported/Forest_Background_01.png-a38890e70122058ca372cc6bf1d32982.ctex"
+uid="uid://momsyjie5ef8"
+path="res://.godot/imported/Enemy03-fly01.png-613ddf33772387a8eedb268e4f929164.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Forest_Background_01.png"
-dest_files=["res://.godot/imported/Forest_Background_01.png-a38890e70122058ca372cc6bf1d32982.ctex"]
+source_file="res://Sprites/Enemy/Enemy003/Enemy03-fly01.png"
+dest_files=["res://.godot/imported/Enemy03-fly01.png-613ddf33772387a8eedb268e4f929164.ctex"]
 
 [params]
 
