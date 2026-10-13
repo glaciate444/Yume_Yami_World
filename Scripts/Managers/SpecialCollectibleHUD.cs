@@ -3,8 +3,24 @@ using System;
 
 public partial class SpecialCollectibleHUD : Control {
     [ExportCategory("HUD Settings")]
-    [Export] public int CurrentStageId = 1;
-    [Export] public int TotalCollectiblesInStage = 3; // この数に合わせて不要な枠を非表示にします
+    private int _currentStageId = 1;
+    [Export]
+    public int CurrentStageId {
+        get => _currentStageId;
+        set {
+            _currentStageId = value;
+            UpdateHUD(); // IDが変わったら即座にHUDを更新
+        }
+    }
+    private int _totalCollectiblesInStage = 3;
+    [Export]
+    public int TotalCollectiblesInStage {
+        get => _totalCollectiblesInStage;
+        set {
+            _totalCollectiblesInStage = value;
+            UpdateHUD(); // 枚数が変わったら即座にHUDを更新
+        }
+    }
 
     [ExportCategory("UI References")]
     // ▼ インスペクターで、先ほど作った Medal1 ～ Medal5 の TextureRect をここに5つセットしてください

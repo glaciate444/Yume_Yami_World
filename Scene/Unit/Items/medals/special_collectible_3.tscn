@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bd17s16bcv4gj"]
+
+[ext_resource type="Script" uid="uid://d2lq27gidgmg5" path="res://Scripts/Managers/SpecialCollectible.cs" id="1_mlb2f"]
+[ext_resource type="Texture2D" uid="uid://d2n66pvqfnsjy" path="res://Sprites/medal/medal_pink.png" id="2_mlb2f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_25grn"]
+
+[node name="SpecialCollectible_3" type="Area2D" unique_id=1925503907]
+script = ExtResource("1_mlb2f")
+CollectibleId = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=957919584 groups=["SpecialItems"]]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_mlb2f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=461312712]
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_25grn")

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://o85eki012g68"]
+
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="1_7pbok"]
+[ext_resource type="Script" uid="uid://1yaeiwody7nn" path="res://Scripts/Stages/BouncingItem.cs" id="2_ejr5x"]
+[ext_resource type="Script" uid="uid://clg6mwog7emmw" path="res://Scripts/Stages/FieldItem.cs" id="3_ejr5x"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7xlj"]
+radius = 5.255949
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r1hij"]
+radius = 7.25
+
+[node name="BouncingItem" type="CharacterBody2D" unique_id=1711936610]
+collision_layer = 32
+collision_mask = 9
+script = ExtResource("2_ejr5x")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=627758284]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_7pbok")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1462544913]
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_w7xlj")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2047049883]
+scale = Vector2(4, 4)
+script = ExtResource("3_ejr5x")
+Effect = 2
+ItemTexture = ExtResource("1_7pbok")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1095004390]
+shape = SubResource("CircleShape2D_r1hij")

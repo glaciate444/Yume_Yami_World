@@ -33,6 +33,7 @@ project/assembly_name="YumeYamiWorld"
 [global_group]
 
 Player=""
+SpecialItems=""
 
 [input]
 
