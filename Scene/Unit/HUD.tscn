@@ -10,6 +10,11 @@
 [ext_resource type="Texture2D" uid="uid://cgs325i2lljlb" path="res://Sprites/HUD/SP_Bar_0_s1.png" id="8_syk1o"]
 [ext_resource type="Texture2D" uid="uid://bfxje1k78vy50" path="res://Sprites/HUD/SP_Bar_3.png" id="9_vtkev"]
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="10_syk1o"]
+[ext_resource type="Script" uid="uid://f876c346gktl" path="res://Scripts/Managers/SpecialCollectibleHUD.cs" id="11_6xax8"]
+[ext_resource type="Texture2D" uid="uid://ct05p32pxcqkg" path="res://Sprites/medal/medal_green.png" id="13_ks4xq"]
+[ext_resource type="Texture2D" uid="uid://d26ogoh3cff3t" path="res://Sprites/medal/medal_star.png" id="14_xtmpg"]
+[ext_resource type="Texture2D" uid="uid://d2n66pvqfnsjy" path="res://Sprites/medal/medal_pink.png" id="15_5fs3t"]
+[ext_resource type="Texture2D" uid="uid://2oaoschesx3c" path="res://Sprites/medal/medal_purple.png" id="16_go650"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_syk1o"]
 load_path = "res://.godot/imported/DashGauge.png-ad26f6f1a47dfef0f3932c1dff59fd0e.ctex"
@@ -19,6 +24,9 @@ load_path = "res://.godot/imported/DashGauge_Empty.png-b97d44cb3b9d43609cc9a5488
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mwr5y"]
 load_path = "res://.godot/imported/DashGauge.png-ad26f6f1a47dfef0f3932c1dff59fd0e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cga3l"]
+load_path = "res://.godot/imported/medal_blue.png-dc136f1af92e5b1c7fb8259e05507468.ctex"
 
 [node name="HUD" type="CanvasLayer" unique_id=2048391615 node_paths=PackedStringArray("_hpBar", "_hpLabel", "_spBar", "_spLabel", "_apContainer", "_coinLabel")]
 script = ExtResource("1_vqag7")
@@ -163,3 +171,43 @@ theme_override_fonts/font = ExtResource("6_0wv5t")
 theme_override_font_sizes/font_size = 70
 text = "000"
 horizontal_alignment = 1
+
+[node name="SpecialMedalContainer" type="HBoxContainer" parent="Margin" unique_id=931623022 node_paths=PackedStringArray("CollectibleIcons")]
+layout_mode = 0
+offset_left = 1224.0
+offset_top = 48.0
+offset_right = 1824.0
+offset_bottom = 180.0
+theme_override_constants/separation = -8
+script = ExtResource("11_6xax8")
+CollectibleIcons = [NodePath("Medal1"), NodePath("Medal2"), NodePath("Medal3"), NodePath("Medal4"), NodePath("Medal5")]
+
+[node name="Medal1" type="TextureRect" parent="Margin/SpecialMedalContainer" unique_id=1381701955]
+layout_mode = 2
+texture = SubResource("CompressedTexture2D_cga3l")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Medal2" type="TextureRect" parent="Margin/SpecialMedalContainer" unique_id=441789905]
+layout_mode = 2
+texture = ExtResource("13_ks4xq")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Medal3" type="TextureRect" parent="Margin/SpecialMedalContainer" unique_id=1334985116]
+layout_mode = 2
+texture = ExtResource("14_xtmpg")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Medal4" type="TextureRect" parent="Margin/SpecialMedalContainer" unique_id=1992116020]
+layout_mode = 2
+texture = ExtResource("15_5fs3t")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Medal5" type="TextureRect" parent="Margin/SpecialMedalContainer" unique_id=518201442]
+layout_mode = 2
+texture = ExtResource("16_go650")
+expand_mode = 3
+stretch_mode = 5
