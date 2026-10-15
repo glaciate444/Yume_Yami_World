@@ -1,26 +1,18 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public partial class TreasureMiniGame : Control {
-    public class RewardData {
-        public bool IsCoin;
-        public int Amount;
-    }
-
     [ExportCategory("宝箱の設定")]
-    // Button でも TextureButton でも入れられるように BaseButton にしています
-    [Export] public BaseButton[] ChestButtons = Array.Empty<BaseButton>();
+    // マウスを使わないため、単なる画像ノード（TextureRect）8個で管理します
+    [Export] public TextureRect[] ChestImages = Array.Empty<TextureRect>();
     [Export] public Texture2D OpenChestSprite;
 
-    // インスペクターから8個の報酬を設定する配列（要素数8に設定してください）
-    // ▼ 修正後（Godot.Collections.Array<bool> に変更）
-    [Export] public Godot.Collections.Array<bool> RewardIsCoin = new() { true, true, true, true, false, false, true, false };
-    [Export] public int[] RewardAmounts = new int[8] { 10, 20, 30, 50, 10, 20, -10, 30 };
+    // すべてコインなので数値配列だけでOK（マイナスを入れれば減点箱にもなります）
+    [Export] public int[] RewardAmounts = new int[8] { 5, 10, 10, 20, 20, 30, 50, -10 };
 
     [ExportCategory("UIナビゲーション設定")]
     [Export] public Control CursorImage;
-    [Export] public Control[] MenuPositions = Array.Empty<Control>();
+    [Export] public Control[] MenuPositions = Array.Empty<Control>(); // 0〜7:宝箱, 8:SKIP
     [Export] public Vector2 CursorOffset = Vector2.Zero;
 
     [ExportCategory("サウンド・遷移設定")]
@@ -30,24 +22,21 @@ public partial class TreasureMiniGame : Control {
 
     [ExportCategory("HUD連携")]
     [Export] public Label HudCoinText;
-    [Export] public Label HudHeartText;
-    [Export] public Label HudLivesText;
     [Export] public Label RemainingOpensText;
 
     [ExportCategory("ポップアップ演出")]
     [Export] public PackedScene RewardPopupPrefab;
     [Export] public Texture2D CoinIconSprite;
-    [Export] public Texture2D HeartIconSprite;
 
-    private List<RewardData> _rewards = new List<RewardData>();
+    private bool[] _isChestOpened = new bool[8];
     private int _openedCount = 0;
-    private const int MAX_OPENS = 2; // 最大2つまで開けられる[cite: 21]
+    private const int MAX_OPENS = 2;
     private bool _isGameOver = false;
 
     private int _currentIndex = 0;
     private float _inputCooldown = 0f;
 
-    // 9箇所のカーソル移動テーブル（上, 下, 左, 右）[cite: 21]
+    // 9箇所のカーソル移動テーブル（上, 下, 左, 右）
     private readonly int[,] _navigation = new int[9, 4] {
         { 0, 4, 0, 1 }, { 1, 5, 0, 2 }, { 2, 6, 1, 3 }, { 3, 7, 2, 3 },
         { 0, 8, 4, 5 }, { 1, 8, 4, 6 }, { 2, 8, 5, 7 }, { 3, 8, 6, 7 },
@@ -59,15 +48,8 @@ public partial class TreasureMiniGame : Control {
             SoundManager.Instance.PlayBGM(MiniGameBgmPath);
         }
 
-        // 配列から報酬リストを組み立てる
-        _rewards.Clear();
-        int count = Mathf.Min(RewardIsCoin.Count, RewardAmounts.Length);
-        for (int i = 0; i < count; i++) {
-            _rewards.Add(new RewardData { IsCoin = RewardIsCoin[i], Amount = RewardAmounts[i] });
-        }
-
-        if (_rewards.Count < ChestButtons.Length) {
-            GD.PrintErr("【設定エラー】Rewardsの数が足りません！");
+        if (RewardAmounts.Length < ChestImages.Length) {
+            GD.PrintErr("【設定エラー】RewardAmountsの数が足りません！");
             return;
         }
         if (MenuPositions.Length < 9) {
@@ -76,23 +58,16 @@ public partial class TreasureMiniGame : Control {
         }
 
         ShuffleRewards();
-
-        for (int i = 0; i < ChestButtons.Length; i++) {
-            if (ChestButtons[i] == null) continue;
-            int index = i;
-            ChestButtons[i].Pressed += () => OnClickChest(index);
-        }
-
         UpdateCursorPosition();
         UpdateHUD();
     }
 
     private void ShuffleRewards() {
-        for (int i = 0; i < _rewards.Count; i++) {
-            RewardData temp = _rewards[i];
-            int randomIndex = GD.RandRange(i, _rewards.Count - 1);
-            _rewards[i] = _rewards[randomIndex];
-            _rewards[randomIndex] = temp;
+        for (int i = 0; i < RewardAmounts.Length; i++) {
+            int temp = RewardAmounts[i];
+            int randomIndex = GD.RandRange(i, RewardAmounts.Length - 1);
+            RewardAmounts[i] = RewardAmounts[randomIndex];
+            RewardAmounts[randomIndex] = temp;
         }
     }
 
@@ -138,28 +113,25 @@ public partial class TreasureMiniGame : Control {
     private void ExecuteMenu() {
         if (_currentIndex == 8) {
             OnClickSkip();
-        } else if (_currentIndex < ChestButtons.Length && ChestButtons[_currentIndex] != null) {
-            if (!ChestButtons[_currentIndex].Disabled) {
-                OnClickChest(_currentIndex);
+        } else if (_currentIndex < ChestImages.Length) {
+            if (!_isChestOpened[_currentIndex]) {
+                OpenChest(_currentIndex);
             }
         }
     }
 
-    public async void OnClickChest(int chestIndex) {
-        if (_openedCount >= MAX_OPENS || _isGameOver) return;
-        if (ChestButtons[chestIndex].Disabled) return;
+    private async void OpenChest(int chestIndex) {
+        if (_openedCount >= MAX_OPENS || _isGameOver || _isChestOpened[chestIndex]) return;
 
+        _isChestOpened[chestIndex] = true;
         _openedCount++;
-        BaseButton clickedChest = ChestButtons[chestIndex];
 
-        // 宝箱を開いた画像に変更（Button / TextureButton 両対応）[cite: 21]
-        if (OpenChestSprite != null) {
-            if (clickedChest is Button btn) btn.Icon = OpenChestSprite;
-            else if (clickedChest is TextureButton texBtn) texBtn.TextureNormal = OpenChestSprite;
+        TextureRect targetChest = ChestImages[chestIndex];
+        if (OpenChestSprite != null && targetChest != null) {
+            targetChest.Texture = OpenChestSprite;
         }
-        clickedChest.Disabled = true;
 
-        ApplyReward(_rewards[chestIndex], clickedChest);
+        ApplyReward(RewardAmounts[chestIndex], targetChest);
 
         if (_openedCount >= MAX_OPENS) {
             _isGameOver = true;
@@ -168,41 +140,34 @@ public partial class TreasureMiniGame : Control {
         }
     }
 
-    private void ApplyReward(RewardData reward, Control chestBtn) {
-        ShowPopup(chestBtn, reward);
+    private void ApplyReward(int amount, Control chestNode) {
+        ShowPopup(chestNode, amount);
 
         if (GameManager.Instance != null) {
-            if (reward.IsCoin) {
-                GameManager.Instance.stageCoins += reward.Amount;
-                if (GameManager.Instance.stageCoins < 0) GameManager.Instance.stageCoins = 0;
-            } else {
-                GameManager.Instance.AddLifePiece(reward.Amount);
-            }
+            GameManager.Instance.stageCoins += amount;
+            if (GameManager.Instance.stageCoins < 0) GameManager.Instance.stageCoins = 0;
         }
         UpdateHUD();
     }
 
     private void UpdateHUD() {
-        if (GameManager.Instance != null) {
-            if (HudCoinText != null) HudCoinText.Text = GameManager.Instance.stageCoins.ToString("D3");
-            if (HudHeartText != null) HudHeartText.Text = GameManager.Instance.currentLifePieces.ToString("D2");
-            if (HudLivesText != null) HudLivesText.Text = GameManager.Instance.currentLives.ToString("D2");
+        if (GameManager.Instance != null && HudCoinText != null) {
+            HudCoinText.Text = GameManager.Instance.stageCoins.ToString("D3");
         }
         if (RemainingOpensText != null) {
             RemainingOpensText.Text = (MAX_OPENS - _openedCount).ToString();
         }
     }
 
-    private void ShowPopup(Control chest, RewardData reward) {
-        if (RewardPopupPrefab == null) return;
+    private void ShowPopup(Control chest, int amount) {
+        if (RewardPopupPrefab == null || chest == null) return;
 
         Control popupObj = RewardPopupPrefab.Instantiate<Control>();
         AddChild(popupObj);
         popupObj.GlobalPosition = chest.GlobalPosition;
 
         if (popupObj is RewardPopup popup) {
-            Texture2D icon = reward.IsCoin ? CoinIconSprite : HeartIconSprite;
-            popup.Setup(icon, reward.Amount);
+            popup.Setup(CoinIconSprite, amount);
         }
     }
 
