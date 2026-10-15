@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://c827ig1ob7mmo" path="res://Scene/Unit/PauseMenu.tscn" id="14_uh0mu"]
 [ext_resource type="PackedScene" uid="uid://cypkjfwcm27eu" path="res://Scene/Unit/Items/medals/special_collectible_2.tscn" id="15_u38nw"]
 [ext_resource type="PackedScene" uid="uid://dtwg3d4k1cop8" path="res://Scene/Unit/BreakableBlock.tscn" id="16_lap42"]
+[ext_resource type="PackedScene" uid="uid://cehtn37maum43" path="res://Scene/Unit/goal_point.tscn" id="17_u38nw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kbx71"]
 texture = ExtResource("1_k4tdd")
@@ -132,6 +133,9 @@ position = Vector2(73, 801)
 floor_constant_speed = true
 floor_snap_length = 16.0
 JumpVelocity = -600.0
+
+[node name="GoalPoint" parent="." unique_id=1806703905 instance=ExtResource("17_u38nw")]
+position = Vector2(10010, 860.00006)
 
 [node name="Coin" parent="." unique_id=1865153980 instance=ExtResource("7_2khtl")]
 position = Vector2(2000, 720)

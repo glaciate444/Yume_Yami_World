@@ -525,4 +525,15 @@ public partial class Player : CharacterBody2D, IDamageable{
             }
         }
     }
+    // ==========================================
+    // ▼ ゴール時の処理
+    // ==========================================
+    public void PlayGoalAction() {
+        // 物理移動を止めてその場に静止させる
+        Velocity = Vector2.Zero;
+        SetPhysicsProcess(false);
+
+        // もしゴール用のアニメーションがあればここで再生
+        // _anim.Play("Goal");
+    }
 }

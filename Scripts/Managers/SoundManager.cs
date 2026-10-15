@@ -52,4 +52,10 @@ public partial class SoundManager : Node {
         // 次に鳴らす再生機の番号をズラす
         _sePlayerIndex = (_sePlayerIndex + 1) % _sePlayers.Length;
     }
+    // BGMを停止する
+    public void StopBGM() {
+        if (_bgmPlayer != null && _bgmPlayer.Playing) {
+            _bgmPlayer.Stop();
+        }
+    }
 }

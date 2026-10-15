@@ -33,6 +33,7 @@ public partial class GameManager : Node {
     [ExportGroup("マップ遷移用")]
     [Export] public string returnMapSceneName = "";
 
+
     [System.Serializable]
     public class OwnedItemData {
         public int itemId;
@@ -204,6 +205,21 @@ public partial class GameManager : Node {
         }
         return false;
     }
+
+    public void MarkStageAsCleared(int stageNumber) {
+        if (!clearedStageNumbers.Contains(stageNumber)) {
+            clearedStageNumbers.Add(stageNumber);
+        }
+        SaveGame(); // クリア状態をセーブデータに反映
+    }
+
+    public void AddEventFlag(string flagName) {
+        if (!eventFlags.Contains(flagName)) {
+            eventFlags.Add(flagName);
+        }
+        SaveGame(); // フラグ状態をセーブデータに反映
+    }
+
 
     // その他フラグ管理メソッド等はロジックが同じため省略せずに使えます（GetTotalSpecialMedals等はPlayerPrefsからConfigFileアクセスに変更が必要です）
 }

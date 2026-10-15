@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bevs8sblw66ty"]
+
+[ext_resource type="Script" uid="uid://cgh3nse463jd" path="res://Scripts/GoalBonus/TreasureMiniGame.cs" id="1_ewua7"]
+
+[node name="MiniGameScene" type="Control" unique_id=2029390901]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ewua7")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1426084142]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CharacterIllust" type="TextureRect" parent="." unique_id=1708102933]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TopHUD" type="Control" parent="." unique_id=168871626]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CoinIco" type="TextureRect" parent="TopHUD" unique_id=1225569285]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelHudCoinText" type="Label" parent="TopHUD" unique_id=1483165152]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="LivesIcon" type="TextureRect" parent="TopHUD" unique_id=1957575772]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RemainingOpensText" type="Label" parent="TopHUD" unique_id=727429428]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
