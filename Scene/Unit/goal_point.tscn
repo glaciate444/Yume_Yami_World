@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cehtn37maum43"]
 
 [ext_resource type="Script" uid="uid://gryv1capu1ui" path="res://Scripts/Stages/GoalPoint.cs" id="1_bug7k"]
-[ext_resource type="Texture2D" uid="uid://dy6vtdakcac7n" path="res://Sprites/flag_blue_a.png" id="2_sj5to"]
-[ext_resource type="Texture2D" uid="uid://cx34f6a76k1l" path="res://Sprites/flag_blue_b.png" id="3_dejgc"]
+[ext_resource type="Texture2D" uid="uid://dy6vtdakcac7n" path="res://Sprites/Misc/flag_blue_a.png" id="2_sj5to"]
+[ext_resource type="Texture2D" uid="uid://cx34f6a76k1l" path="res://Sprites/Misc/flag_blue_b.png" id="3_dejgc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_w7xlj"]
 animations = [{

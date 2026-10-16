@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7l4t2uehd4ui"
-path="res://.godot/imported/Glaciated.png-c35f193c1a98f0dbdd8cd50f5796dde7.ctex"
+uid="uid://dumvcbk61ms63"
+path="res://.godot/imported/Map003.png-bd8124e665dd3a7667b32100a44d76cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Glaciated.png"
-dest_files=["res://.godot/imported/Glaciated.png-c35f193c1a98f0dbdd8cd50f5796dde7.ctex"]
+source_file="res://Sprites/StageSelect/Map003.png"
+dest_files=["res://.godot/imported/Map003.png-bd8124e665dd3a7667b32100a44d76cd.ctex"]
 
 [params]
 

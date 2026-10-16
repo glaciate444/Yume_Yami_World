@@ -1,10 +1,11 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class GoalPoint : Area2D {
     [ExportCategory("遷移先設定")]
     [Export(PropertyHint.File, "*.tscn")]
-    public string NextScenePath = "res://Scene/MiniGameScene.tscn";
+    public string NextScenePath = "res://Scene/mini_game_scene.tscn";
 
     [ExportCategory("ステージ進行設定（フラグ式）")]
     [Export] public int ClearedStageNumber = 1;
@@ -16,6 +17,7 @@ public partial class GoalPoint : Area2D {
     [ExportCategory("サウンド・演出設定")]
     [Export] public AudioStream ResultBGM;
     [Export] public float WaitTime = 2.0f;
+    [Export] public float IrisDuration = 1.5f; // アイリスアウトが閉じる時間
 
     private bool _isGoal = false;
 
@@ -40,7 +42,7 @@ public partial class GoalPoint : Area2D {
         // 1. ステージ内の全敵を停止
         StopAllEnemies(GetTree().CurrentScene);
 
-        // 2. BGMを止めてファンファーレ（ジングル）を鳴らす
+        // 2. BGMを止めてファンファーレを鳴らす
         if (SoundManager.Instance != null) {
             SoundManager.Instance.StopBGM();
             if (ResultBGM != null) {
@@ -48,41 +50,86 @@ public partial class GoalPoint : Area2D {
             }
         }
 
-        // 3. プレイヤーのゴール演出（停止処理）
+        // 3. プレイヤーのゴール演出（停止＆待機アニメ化）
         player.PlayGoalAction();
 
-        // 4. 進行フラグとセーブデータの更新
+        // 4. 進行フラグの更新
         if (GameManager.Instance != null) {
-            // ※もしPlayer.cs側の変数（例: player.Coins や player.currentCoins）から
-            // ゴール時にまとめて渡す方式の場合は、下のコメントを外して変数名を合わせてください。
-            // GameManager.Instance.stageCoins = player.Coins;
-
-            // このステージをクリア済みにする
             GameManager.Instance.MarkStageAsCleared(ClearedStageNumber);
 
-            // ボス撃破などで新ワールドが解放される場合
             if (UnlocksNewWorld) {
                 string worldFlag = "Unlocked_World_" + UnlockWorldReward;
                 GameManager.Instance.AddEventFlag(worldFlag);
-                GD.Print($"新ワールド解放フラグ【{worldFlag}】が立ちました！");
             }
-        } else {
-            //GD.PrintWarning("【テストモード】GameManagerがいないため、フラグ保存はスキップされます。");
         }
 
-        // 5. 指定秒数（WaitTime）待機してから次のシーン（ボーナスステージ等）へ遷移
+        // 5. 指定秒数（WaitTime）待機
         await ToSignal(GetTree().CreateTimer(WaitTime), SceneTreeTimer.SignalName.Timeout);
+
+        // 6. プレイヤーを中心にアイリスアウトを実行してから次シーンへ遷移
+        await PlayIrisOut(player);
 
         if (!string.IsNullOrEmpty(NextScenePath)) {
             GetTree().ChangeSceneToFile(NextScenePath);
         }
-        // GoalPoint.cs の TriggerGoal 末尾：
-        IrisTransitionManager iris = GetTree().CurrentScene.FindChild("IrisTransitionManager", true, false) as IrisTransitionManager;
-        if (iris != null) {
-            iris.StartIrisOut(player, NextScenePath);
-        } else if (!string.IsNullOrEmpty(NextScenePath)) {
-            GetTree().ChangeSceneToFile(NextScenePath);
+    }
+
+    // アイリスアウト演出（GoalPoint単体で確実に動作します）
+    private async Task PlayIrisOut(Node2D target) {
+        CanvasLayer canvasLayer = new CanvasLayer();
+        canvasLayer.Layer = 100;
+        AddChild(canvasLayer);
+
+        ColorRect blackRect = new ColorRect();
+        blackRect.Color = Colors.Black;
+        blackRect.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        canvasLayer.AddChild(blackRect);
+
+        Shader shader = new Shader();
+        shader.Code = @"
+            shader_type canvas_item;
+            uniform vec2 center = vec2(0.5, 0.5);
+            uniform float radius = 1.5;
+            uniform vec2 screen_size = vec2(1920.0, 1080.0);
+
+            void fragment() {
+                vec2 uv = UV * screen_size;
+                vec2 c = center * screen_size;
+                float dist = distance(uv, c);
+                float max_dist = length(screen_size);
+                if (dist < radius * max_dist) {
+                    COLOR = vec4(0.0, 0.0, 0.0, 0.0);
+                } else {
+                    COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+                }
+            }";
+        ShaderMaterial mat = new ShaderMaterial();
+        mat.Shader = shader;
+        blackRect.Material = mat;
+
+        float timer = 0f;
+        while (timer < IrisDuration) {
+            timer += (float)GetProcessDeltaTime();
+            float progress = Mathf.Clamp(timer / IrisDuration, 0f, 1f);
+            float ease = progress * progress * progress;
+
+            mat.SetShaderParameter("radius", Mathf.Lerp(1.2f, 0.0f, ease));
+
+            Vector2 viewportSize = GetViewport().GetVisibleRect().Size;
+            mat.SetShaderParameter("screen_size", viewportSize);
+
+            if (IsInstanceValid(target)) {
+                // 画面上のプレイヤーの位置（0.0〜1.0）を計算して円の中心にする
+                Vector2 screenPos = target.GetGlobalTransformWithCanvas().Origin;
+                mat.SetShaderParameter("center", screenPos / viewportSize);
+            }
+
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
         }
+
+        mat.SetShaderParameter("radius", 0.0f);
+        await ToSignal(GetTree().CreateTimer(0.2f), SceneTreeTimer.SignalName.Timeout);
+        canvasLayer.QueueFree();
     }
 
     private void StopAllEnemies(Node parent) {
@@ -94,5 +141,4 @@ public partial class GoalPoint : Area2D {
             StopAllEnemies(child);
         }
     }
-
 }

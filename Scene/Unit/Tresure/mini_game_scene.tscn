@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://bevs8sblw66ty"]
 
 [ext_resource type="Script" uid="uid://cgh3nse463jd" path="res://Scripts/GoalBonus/TreasureMiniGame.cs" id="1_ewua7"]
-[ext_resource type="Texture2D" uid="uid://c0d6lmf7cfu0g" path="res://Sprites/chest_02.png" id="2_2u4sm"]
+[ext_resource type="Texture2D" uid="uid://c0d6lmf7cfu0g" path="res://Sprites/Misc/chest_02.png" id="2_2u4sm"]
 [ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="3_61a4v"]
-[ext_resource type="Texture2D" uid="uid://cmtv4qntgkbm7" path="res://Sprites/chest_01.png" id="3_oi3px"]
+[ext_resource type="Texture2D" uid="uid://cmtv4qntgkbm7" path="res://Sprites/Misc/chest_01.png" id="3_oi3px"]
 [ext_resource type="PackedScene" uid="uid://bk80k1v7ibsxs" path="res://Scene/Unit/Tresure/reward_popup.tscn" id="3_smsqr"]
 [ext_resource type="Texture2D" uid="uid://c6e6n6p14wit5" path="res://Sprites/BackGround/Normal_background002.png" id="3_x6u8q"]
 [ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="4_u4op3"]
-[ext_resource type="Texture2D" uid="uid://b1lag7icsgj7b" path="res://Sprites/cursor_frame.png" id="5_61a4v"]
+[ext_resource type="Texture2D" uid="uid://b1lag7icsgj7b" path="res://Sprites/Misc/cursor_frame.png" id="5_61a4v"]
 
 [node name="MiniGameScene" type="Control" unique_id=2029390901 node_paths=PackedStringArray("ChestImages", "CursorImage", "MenuPositions", "HudCoinText", "RemainingOpensText")]
 layout_mode = 3

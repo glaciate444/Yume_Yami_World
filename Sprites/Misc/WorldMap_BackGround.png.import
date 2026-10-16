@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy6vtdakcac7n"
-path="res://.godot/imported/flag_blue_a.png-77b5b793f9e739a854f3534fca343d7a.ctex"
+uid="uid://bg6nmntsewddt"
+path="res://.godot/imported/WorldMap_BackGround.png-a8e96a85ff2c9e3f8884fd60e867924d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/flag_blue_a.png"
-dest_files=["res://.godot/imported/flag_blue_a.png-77b5b793f9e739a854f3534fca343d7a.ctex"]
+source_file="res://Sprites/Misc/WorldMap_BackGround.png"
+dest_files=["res://.godot/imported/WorldMap_BackGround.png-a8e96a85ff2c9e3f8884fd60e867924d.ctex"]
 
 [params]
 

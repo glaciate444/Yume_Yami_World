@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://by1mtn6sdb2yx"]
 
 [ext_resource type="Script" uid="uid://cehwgtiobuovm" path="res://Scripts/Managers/TitleManager.cs" id="1_b7ywl"]
-[ext_resource type="Texture2D" uid="uid://dl0neu4k5a1ea" path="res://Sprites/title_background.png" id="1_xrdtm"]
-[ext_resource type="Texture2D" uid="uid://bmm16etckc5mx" path="res://Sprites/title_01.png" id="2_xkc1y"]
+[ext_resource type="Texture2D" uid="uid://dl0neu4k5a1ea" path="res://Sprites/Misc/title_background.png" id="1_xrdtm"]
+[ext_resource type="Texture2D" uid="uid://bmm16etckc5mx" path="res://Sprites/Misc/title_01.png" id="2_xkc1y"]
 [ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="3_b7ywl"]
 [ext_resource type="Texture2D" uid="uid://d01vqnl4be11m" path="res://Sprites/Title/Normal_background001.png" id="5_p2h0x"]
 [ext_resource type="Texture2D" uid="uid://b70p7hdy6wq5o" path="res://Sprites/Title/File01_Button_.png" id="6_34bht"]

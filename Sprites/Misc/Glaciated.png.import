@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cx34f6a76k1l"
-path="res://.godot/imported/flag_blue_b.png-e250e6f672be79b1c9348604f0ad0f31.ctex"
+uid="uid://7l4t2uehd4ui"
+path="res://.godot/imported/Glaciated.png-8b78ae3030816d316641c014a574266c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/flag_blue_b.png"
-dest_files=["res://.godot/imported/flag_blue_b.png-e250e6f672be79b1c9348604f0ad0f31.ctex"]
+source_file="res://Sprites/Misc/Glaciated.png"
+dest_files=["res://.godot/imported/Glaciated.png-8b78ae3030816d316641c014a574266c.ctex"]
 
 [params]
 

@@ -136,6 +136,7 @@ JumpVelocity = -600.0
 
 [node name="GoalPoint" parent="." unique_id=1806703905 instance=ExtResource("17_u38nw")]
 position = Vector2(10010, 860.00006)
+NextScenePath = "uid://bevs8sblw66ty"
 
 [node name="Coin" parent="." unique_id=1865153980 instance=ExtResource("7_2khtl")]
 position = Vector2(2000, 720)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2neg2v8b6tmk"
-path="res://.godot/imported/SampleBlock.png-94f3112a24c9eff2babafca9ab53fe89.ctex"
+uid="uid://dy6vtdakcac7n"
+path="res://.godot/imported/flag_blue_a.png-d49339b1ab2528826ecd29775e8974dc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/SampleBlock.png"
-dest_files=["res://.godot/imported/SampleBlock.png-94f3112a24c9eff2babafca9ab53fe89.ctex"]
+source_file="res://Sprites/Misc/flag_blue_a.png"
+dest_files=["res://.godot/imported/flag_blue_a.png-d49339b1ab2528826ecd29775e8974dc.ctex"]
 
 [params]
 

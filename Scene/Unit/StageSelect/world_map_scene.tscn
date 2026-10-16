@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://dhvovw0xl0orh"]
+
+[ext_resource type="Script" uid="uid://d3b6ru5un8yio" path="res://Scripts/Managers/WorldSelectManager.cs" id="1_dvi42"]
+[ext_resource type="Texture2D" uid="uid://bg6nmntsewddt" path="res://Sprites/Misc/WorldMap_BackGround.png" id="2_qelby"]
+[ext_resource type="Texture2D" uid="uid://dw60pkuwgssyc" path="res://Sprites/StageSelect/blue_block.tres" id="3_ln2xc"]
+[ext_resource type="Script" uid="uid://bla3pg5qs380p" path="res://Scripts/Managers/WorldNode.cs" id="4_eu4n2"]
+[ext_resource type="Resource" uid="uid://brfl3ssd41wm2" path="res://Scene/Unit/StageSelect/WorldDatas/World1.tres" id="5_eu4n2"]
+[ext_resource type="Resource" uid="uid://dplrwkpgfg8we" path="res://Scene/Unit/StageSelect/WorldDatas/World2.tres" id="6_gbx12"]
+[ext_resource type="Resource" uid="uid://dw6jvvenqvqxv" path="res://Scene/Unit/StageSelect/WorldDatas/World3.tres" id="7_fbpqj"]
+[ext_resource type="Resource" uid="uid://cpa7grkoar7nl" path="res://Scene/Unit/StageSelect/WorldDatas/World4.tres" id="8_2x1td"]
+[ext_resource type="Texture2D" uid="uid://dy6vtdakcac7n" path="res://Sprites/Misc/flag_blue_a.png" id="8_7ton8"]
+
+[node name="WorldMapScene" type="Control" unique_id=405937454 node_paths=PackedStringArray("PlayerIcon", "CurrentNode")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dvi42")
+PlayerIcon = NodePath("Player")
+CurrentNode = NodePath("Level1")
+
+[node name="WorldMapImage" type="TextureRect" parent="." unique_id=1692368918]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_qelby")
+
+[node name="Level1" type="TextureRect" parent="." unique_id=23853076 node_paths=PackedStringArray("NodeImage", "RightNode")]
+layout_mode = 0
+offset_left = 269.0
+offset_top = 898.0
+offset_right = 349.0
+offset_bottom = 978.0
+texture = ExtResource("3_ln2xc")
+script = ExtResource("4_eu4n2")
+MyWorldData = ExtResource("5_eu4n2")
+NodeImage = NodePath(".")
+RightNode = NodePath("../Level2")
+
+[node name="Level2" type="TextureRect" parent="." unique_id=991846848 node_paths=PackedStringArray("NodeImage", "UpNode", "LeftNode")]
+layout_mode = 0
+offset_left = 1053.0
+offset_top = 925.0
+offset_right = 1133.0
+offset_bottom = 1005.0
+texture = ExtResource("3_ln2xc")
+script = ExtResource("4_eu4n2")
+MyWorldData = ExtResource("6_gbx12")
+NodeImage = NodePath(".")
+UpNode = NodePath("../Level3")
+LeftNode = NodePath("../Level1")
+
+[node name="Level3" type="TextureRect" parent="." unique_id=1275824431 node_paths=PackedStringArray("NodeImage", "DownNode", "RightNode")]
+layout_mode = 0
+offset_left = 1168.0
+offset_top = 572.0
+offset_right = 1248.0
+offset_bottom = 652.0
+texture = ExtResource("3_ln2xc")
+script = ExtResource("4_eu4n2")
+MyWorldData = ExtResource("7_fbpqj")
+NodeImage = NodePath(".")
+DownNode = NodePath("../Level2")
+RightNode = NodePath("../Level4")
+
+[node name="Level4" type="TextureRect" parent="." unique_id=325932777 node_paths=PackedStringArray("NodeImage", "LeftNode")]
+layout_mode = 0
+offset_left = 1659.0
+offset_top = 770.0
+offset_right = 1739.0
+offset_bottom = 850.0
+texture = ExtResource("3_ln2xc")
+script = ExtResource("4_eu4n2")
+MyWorldData = ExtResource("8_2x1td")
+NodeImage = NodePath(".")
+LeftNode = NodePath("../Level3")
+
+[node name="Player" type="Control" parent="." unique_id=1923118549]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Player" unique_id=971587579]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("8_7ton8")
+expand_mode = 1

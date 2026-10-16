@@ -13,7 +13,7 @@ public partial class GoalResultManager : Control {
     [Export] public AudioStream FinishSE;
 
     [ExportCategory("サウンド・遷移設定")]
-    [Export] public string ResultBgmPath = "";
+    [Export] public AudioStream ResultBGM;
     [Export(PropertyHint.File, "*.tscn")]
     public string DefaultWorldMapScenePath = "res://Scene/WorldMap.tscn";
 
@@ -21,12 +21,22 @@ public partial class GoalResultManager : Control {
     private bool _isTransitioning = false;
     private bool _anyKeyPressed = false;
 
+    // 集計画面専用のサウンドプレイヤー（SoundManagerに依存せず確実に鳴らす用）
+    private AudioStreamPlayer _sePlayer;
+    private AudioStreamPlayer _bgmPlayer;
+
     public override void _Ready() {
-        // ボス戦等で変更されたタイムスケールを通常に戻す[cite: 22]
         Engine.TimeScale = 1.0;
 
-        if (SoundManager.Instance != null && !string.IsNullOrEmpty(ResultBgmPath)) {
-            SoundManager.Instance.PlayBGM(ResultBgmPath);
+        // 音再生用のノードを自動準備
+        _sePlayer = new AudioStreamPlayer();
+        AddChild(_sePlayer);
+
+        if (ResultBGM != null) {
+            _bgmPlayer = new AudioStreamPlayer();
+            _bgmPlayer.Stream = ResultBGM;
+            AddChild(_bgmPlayer);
+            _bgmPlayer.Play();
         }
 
         if (GameManager.Instance != null) {
@@ -35,8 +45,19 @@ public partial class GoalResultManager : Control {
         }
     }
 
+    // 効果音を確実に鳴らすヘルパーメソッド
+    private void PlayLocalSE(AudioStream se) {
+        if (se == null) return;
+
+        if (SoundManager.Instance != null) {
+            SoundManager.Instance.PlaySE(se);
+        } else if (_sePlayer != null) {
+            _sePlayer.Stream = se;
+            _sePlayer.Play();
+        }
+    }
+
     public override void _UnhandledInput(InputEvent @event) {
-        // キーボードの任意のキー、またはコントローラーのボタンが押された瞬間を検知[cite: 22]
         if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo) {
             _anyKeyPressed = true;
         } else if (@event is InputEventJoypadButton joyEvent && joyEvent.Pressed) {
@@ -56,10 +77,8 @@ public partial class GoalResultManager : Control {
 
         if (isButtonPressed) {
             if (_isCounting) {
-                // カウント中に押されたらループを抜けて即座に最終結果を表示する[cite: 22]
                 _isCounting = false;
             } else {
-                // カウント終了後に押されたら次のシーンへ遷移[cite: 22]
                 _ = WaitAndTransitionRoutine();
             }
         }
@@ -78,22 +97,19 @@ public partial class GoalResultManager : Control {
             currentTotalCoins++;
             UpdateUI(currentStageCoins, currentTotalCoins);
 
-            if (SoundManager.Instance != null && CountSE != null) {
-                SoundManager.Instance.PlaySE(CountSE);
-            }
+            // カウント音を鳴らす
+            PlayLocalSE(CountSE);
+
             await ToSignal(GetTree().CreateTimer(CountSpeed, true), SceneTreeTimer.SignalName.Timeout);
         }
 
-        // 最終的な枚数を確定させてUIに反映[cite: 22]
         int finalTotalCoins = GameManager.Instance.totalCoins + GameManager.Instance.stageCoins;
         UpdateUI(0, finalTotalCoins);
         _isCounting = false;
 
-        if (SoundManager.Instance != null && FinishSE != null) {
-            SoundManager.Instance.PlaySE(FinishSE);
-        }
+        // 完了音を鳴らす
+        PlayLocalSE(FinishSE);
 
-        // GameManagerに保存してセーブ実行
         GameManager.Instance.totalCoins = finalTotalCoins;
         GameManager.Instance.stageCoins = 0;
         GameManager.Instance.SaveGame();

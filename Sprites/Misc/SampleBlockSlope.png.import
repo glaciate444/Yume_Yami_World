@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1lag7icsgj7b"
-path="res://.godot/imported/cursor_frame.png-8e5855cd91d199b192257734b9b26f50.ctex"
+uid="uid://c6a0ocl17nhy2"
+path="res://.godot/imported/SampleBlockSlope.png-e16ddf24bb2677812d52754d83aa262e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/cursor_frame.png"
-dest_files=["res://.godot/imported/cursor_frame.png-8e5855cd91d199b192257734b9b26f50.ctex"]
+source_file="res://Sprites/Misc/SampleBlockSlope.png"
+dest_files=["res://.godot/imported/SampleBlockSlope.png-e16ddf24bb2677812d52754d83aa262e.ctex"]
 
 [params]
 

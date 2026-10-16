@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmm16etckc5mx"
-path="res://.godot/imported/title_01.png-0f83734b1b5cf90cec7951365070da63.ctex"
+uid="uid://d38qyfmufc0vf"
+path="res://.godot/imported/StageNumIcon.png-93eb67f976f6eb0ab5cce88d4057c0b3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/title_01.png"
-dest_files=["res://.godot/imported/title_01.png-0f83734b1b5cf90cec7951365070da63.ctex"]
+source_file="res://Sprites/StageSelect/StageNumIcon.png"
+dest_files=["res://.godot/imported/StageNumIcon.png-93eb67f976f6eb0ab5cce88d4057c0b3.ctex"]
 
 [params]
 

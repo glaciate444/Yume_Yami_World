@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqwcwlamuikrq"
-path="res://.godot/imported/block_empty.png-531a7bb0eb8a16c65cdf4306aec8beff.ctex"
+uid="uid://dija46jh7ttlv"
+path="res://.godot/imported/Points.png-60f4944c512c1b805535c6976b189498.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/block_empty.png"
-dest_files=["res://.godot/imported/block_empty.png-531a7bb0eb8a16c65cdf4306aec8beff.ctex"]
+source_file="res://Sprites/StageSelect/Points.png"
+dest_files=["res://.godot/imported/Points.png-60f4944c512c1b805535c6976b189498.ctex"]
 
 [params]
 

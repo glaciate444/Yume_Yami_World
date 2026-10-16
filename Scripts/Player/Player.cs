@@ -529,11 +529,15 @@ public partial class Player : CharacterBody2D, IDamageable{
     // ▼ ゴール時の処理
     // ==========================================
     public void PlayGoalAction() {
-        // 物理移動を止めてその場に静止させる
+        // 物理移動と毎フレーム処理を完全に止める
         Velocity = Vector2.Zero;
         SetPhysicsProcess(false);
+        SetProcess(false);
 
-        // もしゴール用のアニメーションがあればここで再生
-        // _anim.Play("Goal");
+        // Graphics の子にある AnimatedSprite2D を取得し、小文字の "idle" を再生する
+        AnimatedSprite2D animSprite = GetNodeOrNull<AnimatedSprite2D>("Graphics/AnimatedSprite2D");
+        if (animSprite != null) {
+            animSprite.Play("idle");
+        }
     }
 }

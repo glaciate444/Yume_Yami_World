@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6a0ocl17nhy2"
-path="res://.godot/imported/SampleBlockSlope.png-a52b1bf28c879301650efacc36659a1f.ctex"
+uid="uid://cnaidf5t8cqfl"
+path="res://.godot/imported/Level1_Ground_A.png-89a0ef85ab41d4ccbe935104bc8b64be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/SampleBlockSlope.png"
-dest_files=["res://.godot/imported/SampleBlockSlope.png-a52b1bf28c879301650efacc36659a1f.ctex"]
+source_file="res://Sprites/Misc/Level1_Ground_A.png"
+dest_files=["res://.godot/imported/Level1_Ground_A.png-89a0ef85ab41d4ccbe935104bc8b64be.ctex"]
 
 [params]
 

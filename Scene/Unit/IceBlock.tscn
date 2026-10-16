@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b6rl0n7lkuh7w"]
 
 [ext_resource type="Script" uid="uid://ba1bso2wp6kas" path="res://Scripts/IceBlock.cs" id="1_n5sh1"]
-[ext_resource type="Texture2D" uid="uid://7l4t2uehd4ui" path="res://Sprites/Glaciated.png" id="2_b3cpf"]
+[ext_resource type="Texture2D" uid="uid://7l4t2uehd4ui" path="res://Sprites/Misc/Glaciated.png" id="2_b3cpf"]
 [ext_resource type="PackedScene" uid="uid://lr7irjcrbsds" path="res://Scene/Unit/Particle/ice_break_particle.tscn" id="2_yrooo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w7xlj"]
