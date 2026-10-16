@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://cnanj6b3dr11u"]
+
+[ext_resource type="Script" uid="uid://c54qog70qeb5n" path="res://Scripts/GoalBonus/GoalResultManager.cs" id="1_05aj2"]
+[ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="1_pn7oy"]
+[ext_resource type="Texture2D" uid="uid://dlfad0g0gae81" path="res://Sprites/BackGround/Normal_background001.png" id="1_wjcv4"]
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="2_5ki45"]
+[ext_resource type="AudioStream" uid="uid://cfakuj5un88wf" path="res://Sounds/SE/SNES-Action01-15(Item).mp3" id="2_po6ir"]
+[ext_resource type="AudioStream" uid="uid://dqqekb0so0ggb" path="res://Sounds/SE/SNES-Action01-16(Item).mp3" id="3_xp3cd"]
+
+[node name="ResultScene" type="Control" unique_id=1055452175 node_paths=PackedStringArray("StageCoinText", "TotalCoinText")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_05aj2")
+StageCoinText = NodePath("StageCoinBox/StageCoinText")
+TotalCoinText = NodePath("TotalCoinBox/TotalCoinText")
+CountSE = ExtResource("2_po6ir")
+FinishSE = ExtResource("3_xp3cd")
+
+[node name="Background" type="TextureRect" parent="." unique_id=849384740]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_wjcv4")
+
+[node name="StageCoinBox" type="ColorRect" parent="." unique_id=291502583]
+layout_mode = 0
+offset_left = 1504.0
+offset_top = 358.0
+offset_right = 1804.0
+offset_bottom = 458.0
+color = Color(0.20392157, 0.8352941, 0.8352941, 1)
+
+[node name="CoinIcon" type="TextureRect" parent="StageCoinBox" unique_id=2111417689]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("2_5ki45")
+expand_mode = 1
+
+[node name="StageCoinText" type="Label" parent="StageCoinBox" unique_id=264641474]
+layout_mode = 0
+offset_left = 127.0
+offset_top = -7.0
+offset_right = 285.0
+offset_bottom = 105.0
+theme_override_constants/paragraph_spacing = 0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("1_pn7oy")
+theme_override_font_sizes/font_size = 80
+text = "000"
+
+[node name="TotalCoinBox" type="ColorRect" parent="." unique_id=1330845472]
+layout_mode = 0
+offset_left = 1362.0
+offset_top = 511.0
+offset_right = 1812.0
+offset_bottom = 611.0
+color = Color(0.4509804, 0.74509805, 0.8784314, 1)
+
+[node name="CoinIcon" type="TextureRect" parent="TotalCoinBox" unique_id=1834665100]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("2_5ki45")
+expand_mode = 1
+
+[node name="TotalCoinText" type="Label" parent="TotalCoinBox" unique_id=327160846]
+layout_mode = 0
+offset_left = 124.0
+offset_top = -7.0
+offset_right = 441.0
+offset_bottom = 105.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("1_pn7oy")
+theme_override_font_sizes/font_size = 80
+text = "000000"

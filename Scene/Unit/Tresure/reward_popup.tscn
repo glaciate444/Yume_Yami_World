@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bk80k1v7ibsxs"]
+
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="1_b1ytb"]
+[ext_resource type="Script" uid="uid://trkhxwk5gmq3" path="res://Scripts/GoalBonus/RewardPopup.cs" id="1_ccdqf"]
+[ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="2_ccdqf"]
+
+[node name="RewardPopup" type="Control" unique_id=902361767 node_paths=PackedStringArray("IconImage", "AmountText")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ccdqf")
+IconImage = NodePath("IconImage")
+AmountText = NodePath("AmountText")
+
+[node name="IconImage" type="TextureRect" parent="." unique_id=1469604907]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("1_b1ytb")
+expand_mode = 1
+
+[node name="AmountText" type="Label" parent="." unique_id=581645345]
+layout_mode = 0
+offset_left = 124.0
+offset_right = 288.0
+offset_bottom = 112.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("2_ccdqf")
+theme_override_font_sizes/font_size = 80
+text = "+50"

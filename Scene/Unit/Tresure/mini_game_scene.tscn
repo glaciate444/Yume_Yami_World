@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://c0d6lmf7cfu0g" path="res://Sprites/chest_02.png" id="2_2u4sm"]
 [ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="3_61a4v"]
 [ext_resource type="Texture2D" uid="uid://cmtv4qntgkbm7" path="res://Sprites/chest_01.png" id="3_oi3px"]
+[ext_resource type="PackedScene" uid="uid://bk80k1v7ibsxs" path="res://Scene/Unit/Tresure/reward_popup.tscn" id="3_smsqr"]
+[ext_resource type="Texture2D" uid="uid://c6e6n6p14wit5" path="res://Sprites/BackGround/Normal_background002.png" id="3_x6u8q"]
+[ext_resource type="Texture2D" uid="uid://d7i3btsblxou" path="res://Sprites/Items/coins_1.png" id="4_u4op3"]
 [ext_resource type="Texture2D" uid="uid://b1lag7icsgj7b" path="res://Sprites/cursor_frame.png" id="5_61a4v"]
 
 [node name="MiniGameScene" type="Control" unique_id=2029390901 node_paths=PackedStringArray("ChestImages", "CursorImage", "MenuPositions", "HudCoinText", "RemainingOpensText")]
@@ -15,14 +18,18 @@ script = ExtResource("1_ewua7")
 ChestImages = [NodePath("Chests/Chest0"), NodePath("Chests/Chest1"), NodePath("Chests/Chest2"), NodePath("Chests/Chest3"), NodePath("Chests/Chest4"), NodePath("Chests/Chest5"), NodePath("Chests/Chest6"), NodePath("Chests/Chest7")]
 OpenChestSprite = ExtResource("2_2u4sm")
 CursorImage = NodePath("CursorImage")
-MenuPositions = [NodePath("Chests/Chest0"), NodePath("Chests/Chest1"), NodePath("Chests/Chest2"), NodePath("Chests/Chest3"), NodePath("Chests/Chest4"), NodePath("Chests/Chest5"), NodePath("Chests/Chest6"), NodePath("Chests/Chest7"), null]
+MenuPositions = [NodePath("Chests/Chest0"), NodePath("Chests/Chest1"), NodePath("Chests/Chest2"), NodePath("Chests/Chest3"), NodePath("Chests/Chest4"), NodePath("Chests/Chest5"), NodePath("Chests/Chest6"), NodePath("Chests/Chest7"), NodePath("SkipBox")]
+ResultScenePath = "uid://cnanj6b3dr11u"
 HudCoinText = NodePath("TopHUD/LabelHudCoinText")
 RemainingOpensText = NodePath("TopHUD/RemainingOpensText")
+RewardPopupPrefab = ExtResource("3_smsqr")
+CoinIconSprite = ExtResource("4_u4op3")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1426084142]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("3_x6u8q")
 
 [node name="CharacterIllust" type="TextureRect" parent="." unique_id=1708102933]
 layout_mode = 0
@@ -36,34 +43,42 @@ offset_bottom = 40.0
 
 [node name="CoinIco" type="TextureRect" parent="TopHUD" unique_id=1225569285]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 650.0
+offset_top = 60.0
+offset_right = 770.0
+offset_bottom = 180.0
+texture = ExtResource("4_u4op3")
+expand_mode = 1
 
 [node name="LabelHudCoinText" type="Label" parent="TopHUD" unique_id=1483165152]
 layout_mode = 0
-offset_left = 648.0
-offset_top = 46.0
-offset_right = 767.0
-offset_bottom = 131.0
+offset_left = 826.0
+offset_top = 47.0
+offset_right = 1024.0
+offset_bottom = 187.0
 theme_override_constants/paragraph_spacing = 0
-theme_override_constants/outline_size = 10
+theme_override_constants/outline_size = 15
 theme_override_fonts/font = ExtResource("3_61a4v")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 100
 text = "000"
 
 [node name="LivesIcon" type="TextureRect" parent="TopHUD" unique_id=1957575772]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1184.0
+offset_top = 84.0
+offset_right = 1248.0
+offset_bottom = 148.0
+texture = ExtResource("3_oi3px")
 
 [node name="RemainingOpensText" type="Label" parent="TopHUD" unique_id=727429428]
 layout_mode = 0
-offset_left = 1032.0
-offset_top = 45.0
-offset_right = 1072.0
-offset_bottom = 130.0
+offset_left = 1288.0
+offset_top = 52.0
+offset_right = 1341.0
+offset_bottom = 164.0
+theme_override_constants/outline_size = 15
 theme_override_fonts/font = ExtResource("3_61a4v")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 80
 text = "2"
 
 [node name="Chests" type="Control" parent="." unique_id=342471619]
@@ -73,74 +88,66 @@ offset_bottom = 40.0
 
 [node name="Chest0" type="TextureRect" parent="Chests" unique_id=1487763134]
 layout_mode = 0
-offset_left = 450.0
+offset_left = 550.0
 offset_top = 280.0
-offset_right = 490.0
-offset_bottom = 320.0
-scale = Vector2(2, 2)
+offset_right = 678.0
+offset_bottom = 408.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest1" type="TextureRect" parent="Chests" unique_id=1434019414]
 layout_mode = 0
-offset_left = 750.0
+offset_left = 800.0
 offset_top = 280.0
-offset_right = 790.0
-offset_bottom = 320.0
-scale = Vector2(2, 2)
+offset_right = 928.0
+offset_bottom = 408.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest2" type="TextureRect" parent="Chests" unique_id=988064806]
 layout_mode = 0
 offset_left = 1050.0
 offset_top = 280.0
-offset_right = 1090.0
-offset_bottom = 320.0
-scale = Vector2(2, 2)
+offset_right = 1178.0
+offset_bottom = 408.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest3" type="TextureRect" parent="Chests" unique_id=702620651]
 layout_mode = 0
-offset_left = 1350.0
+offset_left = 1300.0
 offset_top = 280.0
-offset_right = 1390.0
-offset_bottom = 320.0
-scale = Vector2(2, 2)
+offset_right = 1428.0
+offset_bottom = 408.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest4" type="TextureRect" parent="Chests" unique_id=1525173308]
 layout_mode = 0
-offset_left = 450.0
+offset_left = 550.0
 offset_top = 530.0
-offset_right = 514.0
-offset_bottom = 594.0
-scale = Vector2(2, 2)
+offset_right = 678.0
+offset_bottom = 658.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest5" type="TextureRect" parent="Chests" unique_id=1430468295]
 layout_mode = 0
-offset_left = 750.0
+offset_left = 800.0
 offset_top = 530.0
-offset_right = 814.0
-offset_bottom = 594.0
-scale = Vector2(2, 2)
+offset_right = 928.0
+offset_bottom = 658.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest6" type="TextureRect" parent="Chests" unique_id=816605764]
 layout_mode = 0
 offset_left = 1050.0
 offset_top = 530.0
-offset_right = 1114.0
-offset_bottom = 594.0
-scale = Vector2(2, 2)
+offset_right = 1178.0
+offset_bottom = 658.0
 texture = ExtResource("3_oi3px")
 
 [node name="Chest7" type="TextureRect" parent="Chests" unique_id=1525270863]
 layout_mode = 0
-offset_left = 1350.0
+offset_left = 1300.0
 offset_top = 530.0
-offset_right = 1414.0
-offset_bottom = 594.0
-scale = Vector2(2, 2)
+offset_right = 1428.0
+offset_bottom = 658.0
 texture = ExtResource("3_oi3px")
 
 [node name="TextureButton" type="TextureButton" parent="." unique_id=727721355]
@@ -150,8 +157,10 @@ offset_bottom = 40.0
 
 [node name="SkipBox" type="TextureRect" parent="." unique_id=321644350]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1551.0
+offset_top = 832.0
+offset_right = 1591.0
+offset_bottom = 872.0
 
 [node name="CursorImage" type="TextureRect" parent="." unique_id=2108146098]
 layout_mode = 0
