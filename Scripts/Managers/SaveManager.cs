@@ -34,8 +34,10 @@ public partial class SaveManager : Node {
 
     // Unityの PlayerPrefs.SetInt と同じ役割
     public void SetCustomDataInt(string key, int value, string section = "GameData") {
+        // GameManager側が書き込んだ最新の内容を取り込んでから書く（上書き事故の防止）
+        _config.Load(_savePath);
         _config.SetValue(section, key, value);
-        SaveData(); // セットした瞬間にファイルに保存する
+        SaveData();
     }
 
     // Unityの PlayerPrefs.GetInt と同じ役割

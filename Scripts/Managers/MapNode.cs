@@ -95,16 +95,22 @@ public partial class MapNode : Control {
         return false;
     }
 
-    // メダルが取得済みか判定（ステージ内の保存形式とスロット付き形式の両方に対応）
+    // メダルが取得済みか判定（複数の保存キー形式に対応）
     public static bool CheckMedalGot(int stageNum, int medalIndex) {
         if (SaveManager.Instance == null) return false;
 
         int slot = GameManager.Instance != null ? GameManager.Instance.currentSaveSlot : 1;
-        string keyWithSlot = $"Stage_{stageNum}_SpecialItem_{medalIndex}_{slot}";
-        string keySimple = $"Stage_{stageNum}_SpecialItem_{medalIndex}";
 
-        return SaveManager.Instance.GetCustomDataInt(keyWithSlot, 0) == 1 ||
-               SaveManager.Instance.GetCustomDataInt(keySimple, 0) == 1;
+        // 可能性のあるキー名をすべてチェック
+        string key1 = $"Stage_{stageNum}_SpecialItem_{medalIndex}";
+        string key2 = $"Stage_{stageNum}_SpecialItem_{medalIndex}_{slot}";
+        string key3 = $"Stage_{stageNum}_Medal_{medalIndex}";
+
+        bool isGot = SaveManager.Instance.GetCustomDataInt(key1, 0) == 1 ||
+                     SaveManager.Instance.GetCustomDataInt(key2, 0) == 1 ||
+                     SaveManager.Instance.GetCustomDataInt(key3, 0) == 1;
+
+        return isGot;
     }
 
     private void UpdateVisuals() {
@@ -134,7 +140,7 @@ public partial class MapNode : Control {
 
         int collectedMedals = 0;
         for (int i = 0; i < maxMedals; i++) {
-            if (CheckMedalGot(MyLevelData.StageNumber, i)) {
+            if (CheckMedalGot(MyLevelData.DisplayCourseNumber, i)) {
                 collectedMedals++;
             }
         }

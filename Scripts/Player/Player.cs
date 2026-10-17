@@ -84,6 +84,7 @@ public partial class Player : CharacterBody2D, IDamageable{
         // （既存の処理のどこかに追記）
         if (GameManager.Instance != null) {
             GameManager.Instance.currentPlayer = this;
+            GameManager.Instance.stageCoins = 0; // ★この1行を追加（ステージ開始時に0リセット）
         }
 
         // 階層が変わったのでパスを修正して取得
@@ -488,6 +489,11 @@ public partial class Player : CharacterBody2D, IDamageable{
 
         // 最大99枚でストップさせたい場合はここで制限をかけます
         if (Coins > 999) Coins = 999;
+
+        // ★以下の3行を追加（GameManagerに現在のコイン枚数を渡す）
+        if (GameManager.Instance != null) {
+            GameManager.Instance.stageCoins = Coins;
+        }
 
         // HUDへ変更を通知
         CoinChanged?.Invoke(Coins);

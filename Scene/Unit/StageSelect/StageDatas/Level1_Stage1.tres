@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://xqqrllkdx0xo"]
+
+[ext_resource type="Script" uid="uid://w6d5ly4hkhss" path="res://Scripts/Managers/LevelData.cs" id="1_mrmjm"]
+
+[resource]
+script = ExtResource("1_mrmjm")
+LevelName = "1-1: ---"
+ScenePath = "uid://ddwbfbkklctt3"
+metadata/_custom_type_script = "uid://w6d5ly4hkhss"

@@ -4,4 +4,5 @@
 
 [resource]
 script = ExtResource("1_66oqa")
+ScenePath = "uid://5vjq61bmb60e"
 metadata/_custom_type_script = "uid://c4xt6mge0odbc"

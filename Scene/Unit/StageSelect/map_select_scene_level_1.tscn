@@ -4,9 +4,25 @@
 [ext_resource type="Texture2D" uid="uid://ntii7df6dp2r" path="res://Sprites/StageSelect/Map001.png" id="1_ixeay"]
 [ext_resource type="Script" uid="uid://c6icykcx8r2p0" path="res://Scripts/Managers/MapNode.cs" id="3_m7am3"]
 [ext_resource type="Texture2D" uid="uid://cigtqvba32pjv" path="res://Sprites/StageSelect/green_pink.tres" id="3_r2503"]
+[ext_resource type="Resource" uid="uid://xqqrllkdx0xo" path="res://Scene/Unit/StageSelect/StageDatas/Level1_Stage1.tres" id="4_ebvlr"]
 [ext_resource type="Texture2D" uid="uid://btiwp33n5bmkb" path="res://Sprites/StageSelect/StageNumIcon_01A.tres" id="4_m7am3"]
+[ext_resource type="Texture2D" uid="uid://dw60pkuwgssyc" path="res://Sprites/StageSelect/blue_block.tres" id="6_jp7h5"]
+[ext_resource type="Texture2D" uid="uid://mmlt85kfl1dw" path="res://Sprites/StageSelect/green_yellow.tres" id="7_hkj7w"]
+[ext_resource type="Texture2D" uid="uid://7m0oqoa6c3no" path="res://Sprites/StageSelect/StageNumIcon_01B.tres" id="9_d48s3"]
+[ext_resource type="Texture2D" uid="uid://cgulye5mfrob" path="res://Sprites/StageSelect/StageNumIcon_01C.tres" id="10_a4hqe"]
+[ext_resource type="Texture2D" uid="uid://8r3jysw0tf0f" path="res://Sprites/StageSelect/Crown_s.tres" id="11_ogni1"]
+[ext_resource type="Texture2D" uid="uid://csroxj6nxogav" path="res://Sprites/StageSelect/Crown_g.tres" id="12_a4hqe"]
+[ext_resource type="Resource" uid="uid://cscfg0g0yyyt0" path="res://Scene/Unit/StageSelect/StageDatas/Level1_Stage2.tres" id="13_62vrl"]
+[ext_resource type="Texture2D" uid="uid://cscuk8qxulgts" path="res://Sprites/StageSelect/StageNumIcon_02A.tres" id="13_225fq"]
+[ext_resource type="Texture2D" uid="uid://dhsr0f1ivb3vb" path="res://Sprites/StageSelect/StageNumIcon_02B.tres" id="14_xiq7y"]
+[ext_resource type="Texture2D" uid="uid://caggkxvbwf87v" path="res://Sprites/StageSelect/StageNumIcon_02C.tres" id="15_o5s0w"]
+[ext_resource type="FontFile" uid="uid://ck48tji4xufc4" path="res://Sprites/fonts/MPLUSRounded1c-Black.ttf" id="16_xiq7y"]
+[ext_resource type="Texture2D" uid="uid://dy6vtdakcac7n" path="res://Sprites/Misc/flag_blue_a.png" id="17_e82jm"]
+[ext_resource type="Texture2D" uid="uid://dtkj3vjd3g4dm" path="res://Sprites/medal/medal_blue.png" id="17_o5s0w"]
+[ext_resource type="Texture2D" uid="uid://ct05p32pxcqkg" path="res://Sprites/medal/medal_green.png" id="18_el7x7"]
+[ext_resource type="Texture2D" uid="uid://d26ogoh3cff3t" path="res://Sprites/medal/medal_star.png" id="19_62vrl"]
 
-[node name="MapSelectScene_Level_1" type="Control" unique_id=389844256 node_paths=PackedStringArray("PlayerIcon", "CurrentNode", "LineContainer", "MedalImages")]
+[node name="MapSelectScene_Level_1" type="Control" unique_id=389844256 node_paths=PackedStringArray("PlayerIcon", "CurrentNode", "LineContainer", "StageNameText", "MedalImages")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,6 +34,7 @@ PlayerIcon = NodePath("PlayerIcon")
 CurrentNode = NodePath("Point1")
 LineContainer = NodePath("LineContainer")
 WorldMapScenePath = "uid://dhvovw0xl0orh"
+StageNameText = NodePath("MapNamePanel/StageNameText")
 MedalImages = [NodePath("MapNamePanel/Medal0"), NodePath("MapNamePanel/Medal1"), NodePath("MapNamePanel/Medal2")]
 
 [node name="WorldMap_BackImage" type="TextureRect" parent="." unique_id=1294430113]
@@ -32,60 +49,148 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Point1" type="Control" parent="." unique_id=533040944]
+[node name="Point1" type="Control" parent="." unique_id=533040944 node_paths=PackedStringArray("NodeImage", "NumberImage", "CrownImage", "RightNode")]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 546.0
+offset_top = 261.0
+offset_right = 586.0
+offset_bottom = 301.0
 script = ExtResource("3_m7am3")
+MyLevelData = ExtResource("4_ebvlr")
+NodeImage = NodePath("BaseImage")
+LockedSprite = ExtResource("3_r2503")
+UnlockedSprite = ExtResource("6_jp7h5")
+ClearedSprite = ExtResource("7_hkj7w")
+NumberImage = NodePath("NumberImage")
+LockedNumSprite = ExtResource("4_m7am3")
+UnlockedNumSprite = ExtResource("9_d48s3")
+ClearedNumSprite = ExtResource("10_a4hqe")
+CrownImage = NodePath("CrownImage")
+SilverCrownSprite = ExtResource("11_ogni1")
+GoldCrownSprite = ExtResource("12_a4hqe")
+RightNode = NodePath("../Point2")
 
 [node name="BaseImage" type="TextureRect" parent="Point1" unique_id=30493630]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 100.0
+offset_bottom = 100.0
 texture = ExtResource("3_r2503")
 
 [node name="NumberImage" type="TextureRect" parent="Point1" unique_id=20456157]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
 texture = ExtResource("4_m7am3")
 
 [node name="CrownImage" type="TextureRect" parent="Point1" unique_id=225823564]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 50.0
+offset_top = -50.0
+offset_right = 130.0
+offset_bottom = 30.0
+
+[node name="Point2" type="Control" parent="." unique_id=1791519498 node_paths=PackedStringArray("NodeImage", "NumberImage", "CrownImage", "LeftNode")]
+anchors_preset = 0
+offset_left = 908.0
+offset_top = 281.0
+offset_right = 948.0
+offset_bottom = 321.0
+script = ExtResource("3_m7am3")
+MyLevelData = ExtResource("13_62vrl")
+NodeImage = NodePath("BaseImage")
+LockedSprite = ExtResource("3_r2503")
+UnlockedSprite = ExtResource("6_jp7h5")
+ClearedSprite = ExtResource("7_hkj7w")
+NumberImage = NodePath("NumberImage")
+LockedNumSprite = ExtResource("13_225fq")
+UnlockedNumSprite = ExtResource("14_xiq7y")
+ClearedNumSprite = ExtResource("15_o5s0w")
+CrownImage = NodePath("CrownImage")
+SilverCrownSprite = ExtResource("11_ogni1")
+GoldCrownSprite = ExtResource("12_a4hqe")
+LeftNode = NodePath("../Point1")
+
+[node name="BaseImage" type="TextureRect" parent="Point2" unique_id=994237467]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("3_r2503")
+
+[node name="NumberImage" type="TextureRect" parent="Point2" unique_id=539553510]
+layout_mode = 0
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+texture = ExtResource("13_225fq")
+
+[node name="CrownImage" type="TextureRect" parent="Point2" unique_id=775031047]
+layout_mode = 0
+offset_left = 50.0
+offset_top = -50.0
+offset_right = 130.0
+offset_bottom = 30.0
 
 [node name="PlayerIcon" type="TextureRect" parent="." unique_id=895427971]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 44.0
+offset_top = 224.0
+offset_right = 172.0
+offset_bottom = 352.0
+texture = ExtResource("17_e82jm")
 
 [node name="MapNamePanel" type="ColorRect" parent="." unique_id=1685395134]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 200.0
+color = Color(0.7647059, 1, 0.76862746, 1)
 
 [node name="WorldTitleLabel" type="Label" parent="MapNamePanel" unique_id=225919532]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 457.0
+offset_right = 1448.0
+offset_bottom = 99.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("16_xiq7y")
+theme_override_font_sizes/font_size = 70
+text = "LEVEL 1 : パステルフォレスト"
 
 [node name="StageNameText" type="Label" parent="MapNamePanel" unique_id=771628955]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 196.0
+offset_top = 114.0
+offset_right = 236.0
+offset_bottom = 137.0
+theme_override_constants/outline_size = 15
+theme_override_fonts/font = ExtResource("16_xiq7y")
+theme_override_font_sizes/font_size = 60
+text = "1-1:ABCDEFGHIJKLMNOP"
 
 [node name="Medal0" type="TextureRect" parent="MapNamePanel" unique_id=21146076]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1320.0
+offset_top = 80.0
+offset_right = 1440.0
+offset_bottom = 200.0
+texture = ExtResource("17_o5s0w")
+expand_mode = 1
 
-[node name="Medal1" type="TextureRect" parent="MapNamePanel" unique_id=1209677516]
+[node name="Medal1" type="TextureRect" parent="MapNamePanel" unique_id=1408357351]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1440.0
+offset_top = 80.0
+offset_right = 1560.0
+offset_bottom = 200.0
+texture = ExtResource("18_el7x7")
+expand_mode = 1
 
-[node name="Medal2" type="TextureRect" parent="MapNamePanel" unique_id=1391050498]
+[node name="Medal2" type="TextureRect" parent="MapNamePanel" unique_id=807674943]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1560.0
+offset_top = 80.0
+offset_right = 1680.0
+offset_bottom = 200.0
+texture = ExtResource("19_62vrl")
+expand_mode = 1

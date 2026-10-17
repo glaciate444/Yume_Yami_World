@@ -137,6 +137,7 @@ JumpVelocity = -600.0
 [node name="GoalPoint" parent="." unique_id=1806703905 instance=ExtResource("17_u38nw")]
 position = Vector2(10010, 860.00006)
 NextScenePath = "uid://bevs8sblw66ty"
+ClearedStageNumber = 11
 
 [node name="Coin" parent="." unique_id=1865153980 instance=ExtResource("7_2khtl")]
 position = Vector2(2000, 720)
@@ -202,7 +203,7 @@ position = Vector2(8134, 834)
 position = Vector2(6434, 699)
 ItemTexture = ExtResource("8_dcsjc")
 
-[node name="SpecialCollectible_0" parent="." unique_id=1925503907 instance=ExtResource("13_k4tdd")]
+[node name="SpecialCollectible_0" parent="." unique_id=1925503907 groups=["SpecialItems"] instance=ExtResource("13_k4tdd")]
 position = Vector2(2010, 620)
 
 [node name="SpecialCollectible_1" parent="." unique_id=1923718058 instance=ExtResource("14_lap42")]

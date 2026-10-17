@@ -126,13 +126,23 @@ public partial class GoalResultManager : Control {
 
         string nextScene = DefaultWorldMapScenePath;
 
+        // returnMapSceneName が記録されており、かつ実際にそのシーンファイルが存在する場合のみ優先する
         if (GameManager.Instance != null && !string.IsNullOrEmpty(GameManager.Instance.returnMapSceneName)) {
-            nextScene = GameManager.Instance.returnMapSceneName;
+            if (ResourceLoader.Exists(GameManager.Instance.returnMapSceneName)) {
+                nextScene = GameManager.Instance.returnMapSceneName;
+            }
+        }
+
+        // もし遷移先が存在しないパスの場合は、エラーを出して再入力できるようにロックを解除する
+        if (string.IsNullOrEmpty(nextScene) || !ResourceLoader.Exists(nextScene)) {
+            GD.PrintErr($"【遷移エラー】遷移先のシーンが見つかりません: {nextScene} （インスペクターの Default World Map Scene Path を設定してください）");
+            _isTransitioning = false;
+            return;
         }
 
         if (SceneTransitionManager.Instance != null) {
             SceneTransitionManager.Instance.LoadScene(nextScene, TransitionType.Fade);
-        } else if (!string.IsNullOrEmpty(nextScene)) {
+        } else {
             GetTree().ChangeSceneToFile(nextScene);
         }
     }

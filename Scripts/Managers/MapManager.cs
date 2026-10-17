@@ -237,7 +237,7 @@ public partial class MapManager : Control {
             if (StageNameText != null) StageNameText.Text = CurrentNode.MyLevelData.LevelName;
 
             int maxMedals = CurrentNode.MyLevelData.MaxMedals;
-            int stageNum = CurrentNode.MyLevelData.StageNumber;
+            int stageNum = CurrentNode.MyLevelData.DisplayCourseNumber;
 
             for (int i = 0; i < MedalImages.Length; i++) {
                 if (MedalImages[i] != null) {
